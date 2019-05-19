@@ -1,0 +1,24 @@
+@import '../sass/_1_plugins/_variables'
+@import '../sass/_1_plugins/_colors'
+#app-text-display
+  h1
+    font-size: $practice-font-size
+  .guide
+    &.space:before
+      width: $practice-space-width
+  .wrong-char
+    color: $red
+    &.space:not(.guide):after
+      width: $practice-space-width
+      background-color: $red
+#app-text-display.test-mode
+  width: $app-screen-width
+  min-width: $app-screen-min-width
+  height: $app-screen-height
+  min-height: $app-screen-min-height
+  h1
+    font-size: $test-font-size
+  .guide.space:before
+    width: $test-space-width
+  .wrong-char.space:after
+    width: $test-space-width

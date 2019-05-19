@@ -1,0 +1,299 @@
+//Stats
+.stats
+  color: $dark-text
+.light .stats
+  color: $light-text
+//test
+#test
+  .cheer
+    color: $dark-text
+.light #test
+  .cheer
+    color: $light-text
+//app burger
+#app-burger 
+  .app-options-panel
+    color: $dark-text
+    background-color: $dark-elem-background
+    border: solid 1px $dark-border
+  .app-options-choice .selected
+    color: $dark-green
+    &:after
+      background-color: $dark-green
+  .signup-btn
+    color: $dark-text
+.light #app-burger
+  .app-options-panel
+    color: $light-text
+    background-color: $light-elem-background
+    border-color: $light-border
+    box-shadow: 3px 5px 20px rgba($black, 0.15)
+  .app-options-choice .selected
+    color: $light-green
+    &:after
+      background-color: $light-green
+  .signup-btn
+    color: $light-text
+//app notification
+.app-notification
+  background-color: $dark-elem-background
+.light .app-notification
+  background-color: $light-elem-background
+//app tips
+.app-tips
+  background-color: $dark-elem-background
+  color: $dark-text
+.light .app-tips
+  background-color: $light-elem-background
+  color: $light-text
+//app text display
+#app-text-display
+  h1
+    color: $dark-text
+    .gray
+      color: $dark-gray
+  .guide
+    color: $black
+    &:before
+      background-color: $dark-green
+  .guide.wrong-char
+    color: $black
+    &:before
+      background-color: $red
+  .blinking
+    color: $white !important
+.light #app-text-display
+  h1
+    color: $light-text
+    .gray
+      color: $light-gray
+  .guide
+    color: $white
+    &:before
+      background-color: $dark-green
+  .guide.wrong-char
+    color: $white
+    &:before
+      background-color: $red
+  .blinking
+    color: $black !important
+#app-text-display.test-mode
+  border: none
+  background-color: $dark-elem-background
+  box-shadow: none
+.light #app-text-display.test-mode
+  border-color: $light-gray
+  background-color: $light-elem-background
+  box-shadow: 0px 3px 10px rgba($black, 0.15)
+//typing mode
+#typing-mode
+  color: $dark-text
+  background-color: $dark-elem-background
+  .set-text
+    background-color: $dark-elem-background
+  .byCustom
+    textarea
+      background-color: $dark-elem-background
+      color: $dark-text
+  input:checked ~ .samples
+    color: $dark-green
+.light #typing-mode 
+  color: $light-text
+  background-color: $light-elem-background
+  .set-text
+    background-color: $light-elem-background
+  .byCustom
+    textarea
+      background-color: $light-elem-background
+      color: $light-text
+  input:checked ~ .samples
+    color: $light-green
+//control panel
+#control-panel
+  .time-input
+    color: $dark-text
+  .app-options
+    color: $dark-green
+    &.gray
+      color: $dark-gray
+      svg
+        fill: $dark-gray
+    svg
+      fill: $dark-green
+  .speed
+    color: $dark-green
+  .time, .speed, .error
+    transition: color 200ms ease, background-color 200ms ease
+    background-color: $dark-elem-background
+  .app-options-panel, .select-options-panel
+    color: $dark-text
+    background-color: $dark-elem-background
+    border: solid 1px $dark-border
+  .app-options .selected
+    color: $dark-green
+    &:after
+      background-color: $dark-green
+.light #control-panel
+  .time-input
+    color: $light-text
+  .app-options
+    color: $light-green
+    &.gray
+      color: $light-gray
+      svg
+        fill: $light-gray
+    svg
+      fill: $light-green
+  .speed
+    color: $light-green
+  .time, .speed, .error
+    background-color: $light-elem-background
+  .app-options-panel, .select-options-panel
+    color: $light-text
+    background-color: $light-elem-background
+    border-color: $light-border
+    box-shadow: 3px 5px 20px rgba($black, 0.15)
+  .app-options .selected
+    color: $light-green
+    &:after
+      background-color: $light-green
+//typing mode control
+#typing-mode-control
+  .custom-select
+    color: $dark-green
+    &.gray
+      color: $dark-gray
+  .select-options-panel
+    color: $dark-text
+    background-color: $dark-elem-background
+    border: solid 1px $dark-border
+  .select-option
+    color: $dark-text
+    &.selected
+      color: $dark-green
+.light #typing-mode-control
+  .custom-select
+    color: $light-green
+    &.gray
+      color: $light-gray
+  .select-options-panel
+    color: $light-text
+    border-color: $light-border
+    background-color: $light-elem-background
+    box-shadow: 3px 5px 20px rgba($black, 0.15)
+  .select-option
+    color: $light-text
+    &.selected
+      color: $light-green
+
+#pauseIcon
+  fill: $red
+#resetIcon
+  fill: $blue
+#playIcon
+  fill: $dark-green
+
+//app control buttons
+#app-control-buttons  
+  button
+    background-color: $dark-elem-background
+    border: solid 1px $dark-border
+    box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.5)
+  #pauseIcon, #playIcon, #resetIcon 
+    &.gray
+      fill: $dark-gray
+.light #app-control-buttons
+  button
+    border-color: $light-border
+    background-color: $light-elem-background
+    box-shadow: 1px 3px 10px rgba(0, 0, 0, 0.2)
+  #pauseIcon, #playIcon, #resetIcon 
+    &.gray
+      fill: $light-light-gray
+.light #playIcon
+  fill: $dark-green
+
+#app-keyboard
+  border: solid 1px $dark-border
+  background-color: $dark-elem-background
+  // box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.5)
+  &.gray
+    border-color: $dark-border
+.light #app-keyboard
+  border-color: $light-border
+  background-color: $light-elem-background
+  box-shadow: 3px 5px 20px rgba(0, 0, 0, 0.15)
+  &.gray
+    border-color: $light-border
+//result display
+.result-display
+  background-color: $dark-elem-background
+  .col-label
+    color: $dark-text
+  .result-date 
+    color: $dark-text
+  .result-row
+    border-bottom: solid 1px $dark-border
+  .current
+    &.red-border
+      border: dotted 3px $red
+    &.green-border
+      border: dotted 3px $green
+.light .result-display
+  border: solid 1px $light-border
+  background-color: $light-elem-background
+  box-shadow: 3px 5px 20px rgba(0, 0, 0, 0.15)
+  .col-label
+    color: $light-text
+  .result-date
+    color: $light-text
+  .result-row
+    border-bottom-color: $light-light-gray
+  .current
+    &.red-border
+      border: dotted 3px $red
+    &.green-border
+      border: dotted 3px $green
+//app-user-form
+.app-user-form
+  .app-user-inputs
+    border: solid 1px $dark-border
+    color: $dark-text
+    background-color: $dark-elem-background
+    box-shadow: 1px 3px 20px rgba($white, 0.5)
+    input
+      border-color: $dark-gray
+      color: $dark-text
+.light .app-user-form
+  .app-user-inputs
+    border: solid 1px $light-border
+    color: $light-text 
+    background-color: $light-elem-background
+    box-shadow: 1px 3px 20px rgba($black, 0.15)
+    input
+      border-color: $light-gray
+      color: $light-text
+//app loading
+.app-loading
+  color: $dark-text
+  background-color: rgba($dark-elem-background, 0.5)
+.light .app-loading
+  color: $light-text
+  background-color: rgba($light-elem-background, 0.5)
+
+.about
+  color: $dark-text
+  figure
+    background-color: $dark-elem-background
+.light .about
+  color: $light-text
+  figure
+    background-color: $light-elem-background
+.fasterer
+  background-color: $dark-elem-background
+  .text
+    color: $dark-text
+.light .fasterer
+  background-color: $light-elem-background
+  .text
+    color: $light-text

@@ -1,0 +1,24 @@
+.exit-icon
+  display: block
+  position: absolute
+  height: 1rem
+  width: 1rem
+  top: 10px
+  right: 10px
+  z-index: inherit
+  border-radius: 50%
+  border: solid 1px $red
+  cursor: pointer
+  &:before, &:after
+    content: ''
+    display: block
+    height: 1px
+    width: 60%
+    position: absolute
+    top: 50%
+    left: 50%
+    background-color: $red
+    transform-origin: center center
+    transform: translate(-50%, -50%) rotate(45deg)
+  &:after
+    transform: translate(-50%, -50%) rotate(-45deg)

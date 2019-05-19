@@ -1,0 +1,42 @@
+//use to tip by adding the "tooltip" class to the element that should have a tool tip then add child element with the class "tootip-text"
+.tooltip
+  position: relative
+  &:hover .tooltip-text
+    opacity: 1
+.tooltip-text
+  pointer-events: none
+  width: auto
+  text-align: center
+  padding: 0.5rem
+  border-radius: 5px
+  position: absolute
+  z-index: inherit
+  font-size: 1rem
+  text-transform: lowercase
+  bottom: calc(100% + 1rem)
+  left: 50%
+  transform: translateX(-50%)
+  opacity: 0
+  transition: opacity 200ms ease
+  &:after
+    content: ""
+    position: absolute
+    top: 100%
+    left: 50%
+    margin-left: -0.5rem
+    border-width: 0.5rem
+    border-style: solid
+    border-color: transparent
+
+//THEME
+.tooltip-text
+  color: $dark-text
+  background-color: $dark-elem-background
+  &:after
+    border-top-color: $dark-elem-background
+
+.light .tooltip-text
+  color: $light-text
+  background-color: $light-elem-background
+  &:after
+    border-top-color: $light-elem-background

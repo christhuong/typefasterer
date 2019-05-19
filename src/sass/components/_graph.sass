@@ -1,0 +1,166 @@
+@import '../_1_plugins/_colors'
+#graph
+  position: fixed
+  height: 40vh
+  width: 100vw
+  bottom: 0
+  left: 0
+  display: grid
+  grid-template-rows: 1fr
+  grid-template-columns: 2rem auto
+  grid-template-areas: '. chart'
+  sup
+    font-size: 0.5rem
+  .result-lines
+    position: absolute
+    width: 100vw
+    height: 64%
+    bottom: 16%
+    left: 0
+    &:after
+      content: ''
+      display: block
+      position: absolute
+      height: 2px
+      width: 100%
+      left: 0
+      bottom: 0
+    &>div
+      opacity: 1
+      position: absolute
+      left: 0
+      bottom: 0
+      height: 0
+      width: 100%
+      border: dashed 1px transparent
+      border-bottom-color: currentColor
+      &:after
+        content: attr(data-content)
+        position: absolute
+        bottom: 0
+        left: 0.5rem
+        font-size: 0.75rem
+        display: block
+        color: currentColor
+      &:nth-child(1)
+        color: $blue
+      &:nth-child(2)
+        color: $green-text
+        border-bottom-color: $green
+      &:nth-child(3)
+        color: $red
+
+  .result-cell
+    position: relative
+    height: 80%
+    display: grid
+    grid-template-columns: 1fr 1fr 1fr
+    grid-template-rows: 4fr 1fr
+    grid-template-areas: 'time speed error' 'date date date'
+    justify-content: center
+    align-content: end
+    justify-items: center
+    &:hover > .result-label
+      transform: translateY(0)
+      opacity: 1
+    .result-col
+      opacity: 1
+      width: 0.5rem
+      transform-origin: bottom
+    .date-row
+      grid-area: date
+    .time-col
+      grid-area: time
+      background-color: $blue
+    .speed-col
+      grid-area: speed
+      background-color: $green
+    .error-col
+      grid-area: error
+      background-color: $red
+.result-label
+  position: absolute
+  height: 3rem
+  width: auto
+  border-radius: 5px
+  display: grid
+  grid-template-rows: 1fr
+  grid-template-columns: repeat(3, 1fr)
+  grid-gap: 1rem
+  place-content: center
+  place-items: center
+  font-size: 1rem
+  bottom: 100%
+  padding: 0 0.5rem
+  z-index: 10
+  opacity: 0
+  transform: translateY(100%)
+  transition: opacity 200ms ease 100ms, transform 200ms ease 100ms
+  user-select: none
+  pointer-events: none
+  & > div
+    &:nth-child(1)
+      color: $blue
+    &:nth-child(2)
+      color: $green-text
+    &:nth-child(3)
+      color: $red
+  &:after, &:before
+    content: ''
+    position: absolute
+    display: block
+    height: 0
+    width: 0
+    left: 50%
+    top: 100%
+  &:after
+    z-index: 11
+    transform: translate(-50%, -1px)
+    border: solid 0.5rem transparent
+  &:before
+    z-index: 9
+    transform: translate(-50%, 0)
+    border: solid calc(0.5rem + 1px) transparent
+.result-cells-container
+  padding-left: 4rem
+  grid-area: chart
+  height: 100%
+  width: auto
+  display: grid
+  grid-template-rows: 1fr
+  grid-auto-columns: 2rem
+  grid-auto-flow: column
+  grid-gap: 2rem
+  align-items: end
+  overflow-x: auto
+#graph
+  .result-lines
+    &:after
+      z-index: 10
+      background-color: $dark-gray
+  .result-cell
+    .date-row
+      color: $dark-text
+.light #graph
+  .result-lines
+    &:after
+      background-color: $light-gray
+  .result-cell
+    .date-row
+      color: $light-text
+.result-label
+  background-color: $dark-elem-background
+  border: solid 1px $dark-border
+  color: $dark-text
+  &:after
+    border-top-color: $dark-elem-background
+  &:before
+    border-top-color: $dark-border
+.light .result-label
+  background-color: $light-elem-background
+  border: solid 1px $light-border
+  color: $light-text
+  &:after
+    border-top-color: $light-elem-background
+  &:before
+    border-top-color: $light-border

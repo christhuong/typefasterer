@@ -1,0 +1,27 @@
+label.custom-input
+  position: relative
+  height: auto
+  width: auto
+  padding-left: 20px
+  input
+    position: absolute
+    cursor: pointer
+    display: none
+  .checkmark
+    position: absolute
+    top: 50%
+    left: 0
+    transform: translateY(-50%)
+    height: 0.75rem
+    width: 0.75rem
+    background-color: rgba(#cccccc, 0.5)
+    transition: background-color 100ms ease
+  input:hover ~ .checkmark
+    background-color: #cccccc
+  input:checked ~ .checkmark
+    background-color: $green
+    &.not-used
+      background-color: #e0e0e0
+      color: #e0e0e0
+  input:checked:hover ~ .checkmark
+    background-color: rgba($green, 0.5)

@@ -1,0 +1,52 @@
+.app-options
+  font-size: 1rem
+  height: auto
+  width: auto
+  white-space: nowrap
+  position: relative
+  transition: color 200ms ease
+.app-options-panel
+  display: grid
+  position: absolute
+  border-radius: 5px
+  grid-template-columns: 1fr
+  grid-template-rows: 2fr 1fr
+  grid-row-gap: 1rem
+  width: 18rem
+  text-align: left
+  padding: 2rem
+  z-index: 99
+  .app-options-choice
+    &.theme-choice
+      border-width: 0
+      border-top-width: 1px
+    margin: 0
+  .label
+    text-transform: uppercase
+    font-size: 0.5rem
+  ul
+    width: 100%
+    white-space: nowrap
+    display: grid
+    grid-template-rows: 1fr
+    grid-template-columns: 1fr 1fr
+    grid-column-gap: 20px
+    padding: 0
+    margin: 0
+    li
+      text-align: left
+      display: inline-block
+      width: auto
+      position: relative
+      padding-left: 20px
+      cursor: pointer
+      &:after
+        content: ''
+        height: 0.5rem
+        width: 0.5rem
+        background-color: #ececec
+        position: absolute
+        top: 50%
+        left: 0
+        transform: translateY(-50%)
+        border-radius: 50%

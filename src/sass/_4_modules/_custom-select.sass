@@ -1,0 +1,69 @@
+//old name: display-cell
+.custom-select
+  height: auto
+  cursor: pointer
+  position: relative
+  font-size: 1rem
+  color: inherit
+  &.not-used
+    color: #e0e0e0
+.select-options-panel
+  position: absolute
+  font-size: 1rem
+  padding: 1rem 0
+  margin: 0
+  right: -15px
+  top: 0
+  z-index: 99
+  height: auto
+  width: auto
+  border-radius: 5px
+  text-align: left
+  opacity: 1
+.select-option
+  height: auto
+  width: auto
+  padding: 0.5rem 2rem
+  cursor: pointer
+  position: relative
+  display: block
+  white-space: nowrap
+  &.selected
+    &:before
+      content: ''
+      display: block
+      height: 0.5rem
+      width: 0.5rem
+      border-radius: 50%
+      background-color: currentColor
+      position: absolute
+      left: 1rem
+      top: 50%
+      transform: translateY(-50%)
+.arrow
+  padding-right: 15px
+  &:after
+    position: absolute
+    content: ""
+    top: 50%
+    right: 0
+    width: 0
+    height: 0
+    border: 5px solid transparent
+    border-color: currentColor transparent transparent transparent
+
+.select-options-enter-active
+  transition: all 200ms ease
+.select-options-leave-active
+  transition: all 200ms ease
+.select-options-leave-to, .select-options-enter
+  transform: translateY(-40px)
+  opacity: 0
+
+.select-options-panel .select-option
+  &.selected
+    color: $dark-green
+
+.light .select-options-panel .select-option
+  &.selected
+    color: $light-green
