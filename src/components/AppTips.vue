@@ -1,5 +1,5 @@
 <template lang="pug">
-transition(name="select-options")
+transition(name="select-options" appear)
   .app-tips(v-if="showTip")
     span.exit-icon(v-if="!noExit" @click="showTip = false")
     .tip-icon
@@ -31,6 +31,8 @@ export default {
       type: Boolean,
       required: false
     }
+  },
+  computed: {
   }
 }
 </script>

@@ -88,7 +88,8 @@ export default {
   position: relative
   z-index: 0
   display: grid
-  place-content: center
+  align-content: center
+  justify-content: center
   height: 5.8rem
   width: 48vw
   min-width: 36rem

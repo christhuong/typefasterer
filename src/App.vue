@@ -13,11 +13,13 @@
         </div>
         <app-burger/>
       </div>
-      <transition name='slide'>
-        <router-view/>
-      </transition>
+      <router-view/>
       <app-notification/>
       <app-loading/>
+      <app-tips class="app-tip-main" v-if="showTips">
+        You are not logged in. <br>
+        <a @click="setDisplayTips(false)" href="/signup" class="bold blue">Sign up</a> or <a @click="setDisplayTips(false)" href="/login" class="bold blue">Log in</a> now to save your data and access it everywhere!
+      </app-tips>
     </div>
   </div>
 </template>
@@ -26,26 +28,33 @@ import {mapState, mapMutations, mapActions} from 'vuex'
 import AppBurger from './components/AppBurger.vue'
 import AppNotification from './components/AppNotification.vue'
 import AppLoading from './components/AppLoading.vue'
+import AppTips from './components/AppTips.vue'
 import MobileView from './views/MobileView.vue'
+import { setTimeout } from 'timers';
 export default {
   components: {
     AppBurger,
     AppNotification,
     AppLoading,
+    AppTips,
     MobileView,
   },
   methods: {
     ...mapMutations({
       updateAppTheme: 'UPDATE_APP_THEME',
       setDisplayBurger: 'SET_DISPLAY_BURGER',
+      setDisplayTips: 'SET_DISPLAY_TIPS',
     }),
     ...mapActions({
       userObserver: 'userObserver'
     }),
+    
   },
   computed: {
     ...mapState({
       app: 'app',
+      userLogIn: 'userLogIn',
+      displayTips: 'displayTips',
     }),
     isMobile() {
       return Boolean(
@@ -56,6 +65,9 @@ export default {
         navigator.userAgent.match(/iPod/i) || 
         navigator.userAgent.match(/BlackBerry/i) || 
         navigator.userAgent.match(/Windows Phone/i))
+    },
+    showTips() {
+      return (!this.userLogIn && this.displayTips);
     },
   },
   created() {
@@ -78,6 +90,13 @@ export default {
   margin: 0
   padding: 0
   overflow-x: hidden
+.app-tip-main
+  position: absolute
+  top: 50%
+  left: 50%
+  z-index: 99
+  // transform: translate(0, 0)
+  
 #logo
   position: absolute
   left: 7.14vw

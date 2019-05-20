@@ -95,10 +95,13 @@ export default {
         grid-template-rows: 1fr 2fr
         grid-template-columns: 1fr
         grid-gap: 0.5rem
-        place-content: center
-        place-items: center
+        align-content: center
+        justify-content: center
+        align-items: center
+        justify-items: center
         .name
-          place-self: start 
+          align-self: start
+          justify-self: start
           max-width: 12rem
           overflow: hidden
           text-overflow: ellipsis
@@ -108,8 +111,10 @@ export default {
         grid-template-rows: 1fr
         grid-template-columns: 1fr 1fr
         grid-gap: 0.5rem
-        place-content: center
-        place-items: center
+        align-content: center
+        justify-content: center
+        align-items: center
+        justify-items: center
       .user-btn
         height: 2.5rem
         width: 6rem

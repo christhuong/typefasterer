@@ -68,7 +68,8 @@ export default {
   .cheer
     grid-area: cheer
     font-size: 1.75rem
-    place-self: center
+    align-self: center
+    justify-self: center
   .control-panel
     grid-area: panel
     align-self: end

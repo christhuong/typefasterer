@@ -47,7 +47,8 @@ export default {
 <style lang="sass">
 #app-screen
   display: grid
-  place-content: center
+  align-content: center
+  justify-content: center
 .screen-enter-active
   transition: all .5s ease
 .screen-leave-active

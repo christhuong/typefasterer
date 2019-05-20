@@ -35,7 +35,8 @@ export default {
   grid-template-areas: 'logo' 'announce' 'brand'
   grid-gap: 1.5rem
   justify-content: center
-  place-items: center
+  align-items: center
+  justify-items: center
   .fasterer
     // background-color: none
     background-size: contain
@@ -43,7 +44,8 @@ export default {
     background-position: center
     display: grid
     grid-area: logo
-    place-content: center
+    align-content: center
+    justify-content: center
     position: relative
     height: 100%
     width: 100%

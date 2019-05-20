@@ -62,8 +62,10 @@ export default {
     grid-auto-rows: 90vh
     grid-template-columns: 1fr
     grid-gap: 2rem
-    place-content: center
-    place-items: center
+    align-content: center
+    justify-content: center
+    align-items: center
+    justify-items: center
   section
     position: relative
     width: 100%
@@ -90,7 +92,8 @@ export default {
     grid-template-columns: 1fr
     grid-template-rows: 1fr 1fr
     grid-row-gap: 2rem
-    place-content: center
+    align-content: center
+    justify-content: center
     align-items: center
     grid-template-areas:  'div-2' 'fig-2'
     text-align: center
@@ -136,8 +139,10 @@ export default {
     grid-template-columns: 1fr
     grid-template-rows: 1fr 2fr 4fr
     grid-gap: 1rem
-    place-content: center
-    place-items: center
+    align-content: center
+    justify-content: center
+    align-items: center
+    justify-items: center
     grid-template-areas: 'h1-3' 'h2-3' 'fasterer-3'
     text-align: center
     h1
@@ -149,7 +154,8 @@ export default {
       display: block
     .fasterer
       display: grid
-      place-content: center
+      align-content: center
+      justify-content: center
       grid-area: fasterer-3
       position: relative
       height: 100%

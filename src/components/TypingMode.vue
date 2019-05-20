@@ -205,7 +205,8 @@ export default {
   &>div
     display: grid
     margin: auto
-    place-content: center  
+    align-content: center
+    justify-content: center
 .byKeyboard
   grid-template-columns: 1fr
   grid-template-rows: repeat(5, 1fr)
@@ -238,7 +239,8 @@ export default {
     grid-gap: 0 2rem
     grid-template-columns: 1fr
     grid-template-rows: 2fr repeat(5, 1fr)
-    place-content: center
+    align-content: center
+    justify-content: center
     align-items: center
 .checkmark
   &.radio

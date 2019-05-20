@@ -66,7 +66,8 @@ export default {
   methods: {
     ...mapMutations({
       notify: 'NOTIFY',
-      setDisplayLoading: 'SET_DISPLAY_LOADING'
+      setDisplayLoading: 'SET_DISPLAY_LOADING',
+      setDisplayTips: 'SET_DISPLAY_TIPS',
     }),
     ...mapActions({
       createUserAccount: 'createUserAccount'
@@ -188,6 +189,9 @@ export default {
         return `Enter your email then we will sent you an email to change your password`
       }
     }
+  },
+  mounted() {
+    this.setDisplayTips(false)
   }
 }
 </script>
@@ -213,8 +217,10 @@ export default {
     width: 25rem
     height: auto
     display: grid
-    place-content: center
-    place-items: center
+    align-content: center
+    justify-content: center
+    align-items: center
+    justify-items: center
     padding: 2rem 1rem
     grid-gap: 1rem
     grid-template-columns: 1fr

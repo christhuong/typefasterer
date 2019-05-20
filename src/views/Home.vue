@@ -41,7 +41,8 @@ export default {
   margin: 0
   padding: 0
   display: grid
-  place-content: center
+  align-content: center
+  justify-content: center
   grid-template-rows: 2fr 3fr 1fr 5fr 3fr
   grid-template-columns: 1fr
   grid-template-areas: 'header' 'display' 'panel' 'screen' 'footer'
@@ -61,7 +62,8 @@ export default {
     align-self: center
     justify-self: center
     display: grid
-    place-items: center
+    align-items: center
+    justify-items: center
     width: 100%
     height: 100%
   .app-control-buttons

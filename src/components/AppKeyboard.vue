@@ -100,8 +100,10 @@ export default {
   grid-template-columns: 1fr
   grid-gap: 3.2%
   min-height: 0
-  place-items: stretch
-  place-content: stretch
+  align-items: stretch
+  justify-items: stretch
+  align-content: stretch
+  justify-items: stretch
   &>div
     display: grid
     grid-template-rows: 1fr

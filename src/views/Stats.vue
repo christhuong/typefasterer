@@ -142,7 +142,7 @@ export default {
       return f(this.statsData);
     },
   },
-  created() {
+  mounted() {
     this.updateStatsData();
   }
 }
@@ -162,7 +162,8 @@ export default {
   grid-template-rows: 4fr 6fr
   grid-template-columns: 1fr
   grid-gap: 2rem
-  place-content: center
+  align-content: center
+  justify-content: center
 .time-bar-wrapper
   height: 2rem
   width: 80vw
@@ -186,7 +187,8 @@ export default {
     display: grid
     grid-template-rows: 1fr
     grid-template-columns: 1fr
-    place-content: center
+    align-content: center
+    justify-content: center
     opacity: 1
     left: 0
     bottom: calc(100% + 1rem)
@@ -204,8 +206,10 @@ export default {
   display: grid
   grid-template-rows: 1fr 
   grid-template-columns: 1fr 1fr 1fr
-  place-content: center
-  place-items: center
+  align-content: center
+  justify-content: center
+  align-items: center
+  justify-content: center
   grid-gap: 2rem
   position: relative
   .value

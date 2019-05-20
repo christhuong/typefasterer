@@ -224,7 +224,9 @@ export default {
       position: absolute
       top: 50%
       left: 50%
-      transform: translate(-50%, -50%) scale(0.4)
+      height: 55%
+      width: 55%
+      transform: translate(-50%, -50%)
   button.startBtn svg
     left: 55%
 #pauseIcon, #playIcon, #resetIcon 

@@ -48,6 +48,7 @@ export default {
       statsResults: 'statsResults'
     }),
     results() {
+      if (this.statsResults.length <= 0) return [];
       return this.statsResults.sort((b, a) => new Date(a[0]) - new Date(b[0]));
     },
     date() {
@@ -64,7 +65,7 @@ export default {
       return this.statsResults ? this.statsResults.map(el => Math.round(el[3])) : []
     },
     congrats() {
-      return this.speed[0] >= this.speed[1] && this.error[0] <= this.error[1];
+      return this.speed[0] >= this.speed[1] && this.error[0] <= this.error[1] || this.results.length === 1;
     },
     resultLength() {
       return this.results.length;
@@ -73,7 +74,9 @@ export default {
   watch: {
     resultLength() {
       if (this.congrats) {
-        this.notify({type: 'success', message: 'Congrats! you made an improvement!'})
+        this.notify({type: 'success', message: 'Congrats! You made an improvement!'})
+      } else if (this.congrats && this.results.length === 1) {
+        this.notify({type: 'success', message: 'Congrats! You did your first exercise! You can type even faster with more practice!'})
       } else {
         this.notify({type: 'error', message: 'You did type faster and made less error than this! Try harder!'})
       }

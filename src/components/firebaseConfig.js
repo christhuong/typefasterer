@@ -1,9 +1,9 @@
 export default {
   apiKey: "",
-  authDomain: "",
-  databaseURL: "",
-  projectId: "",
-  storageBucket: "",
+  authDomain: "typefasterer.firebaseapp.com",
+  databaseURL: "https://typefasterer.firebaseio.com",
+  projectId: "typefasterer",
+  storageBucket: "typefasterer.appspot.com",
   messagingSenderId: "",
   appId: ""
 }

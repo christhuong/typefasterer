@@ -39,6 +39,7 @@ export default new Vuex.Store({
     displayBurger: false,
     displayOptions: false, //display the typing mode panel
     displayLoading: false,
+    displayTips: true,
 
     byWord: false, //type by word or by letters
 
@@ -148,6 +149,9 @@ export default new Vuex.Store({
     SET_DISPLAY_RESULT(state, displaying = false) {
       state.displayResult = displaying;
     },
+    SET_DISPLAY_TIPS(state, displaying = false) {
+      state.displayTips = displaying;
+    },
     SET_APP_THEME(state, theme = 'dark') {
       localStorage.setItem('typingAppTheme', theme);
       state.app.theme = theme;
@@ -163,7 +167,25 @@ export default new Vuex.Store({
       state.speed = 0;
       state.error = 0;
     },
-
+    SET_USER_LOG_IN(state, logIn = true) {
+      state.userLogIn = logIn;
+    },
+    SET_TYPINGTEXT_FROM_FIRESTORE(state, dataObj) {
+      if (Object.keys(dataObj.data).length <= 0) return;
+      Object.keys(dataObj.data).map(el => {
+        switch (dataObj.key) {
+          case 'words':
+            state.typingText.words[el] = dataObj.data[el].join('').split(','); break;
+          case 'sentences':
+            state.typingText.sentences[el] = dataObj.data[el];
+            break;
+          default:
+            state.typingText[dataObj.key][el] = dataObj.data[el];
+            break;
+        }
+      });
+    },
+    
     //KEYBOARD
     SHIFT_PRESSED(state, payload) {
       state.shiftKeyActive = payload;
@@ -266,18 +288,26 @@ export default new Vuex.Store({
 
     //UPDATE
     UPDATE_APP_THEME(state) {
-      state.app.theme = localStorage.getItem('typingAppTheme');
+      let theme = localStorage.getItem('typingAppTheme');
+      if (theme) {
+        state.app.theme = theme;
+        return
+      } else {
+        let date = new Date().getHours();
+        state.app.theme = (date >= 6 && date <= 18) ? 'light' : 'dark';
+      }
     },
     UPDATE_STATS_DATA(state, resultArr) {
-      if (resultArr.length <= 0) return
+      if (resultArr.length <= 0 || !resultArr.length) return;
       state.statsResults = resultArr;
       const func = inputArr => {
-        if (inputArr.length <= 0 || !inputArr) return
+        if (inputArr.length <= 0 || !inputArr.length) return;
         let count = inputArr.map(el => new Date(el[0]).toDateString()).reduce((acc, cur) => acc[cur] ? (acc[cur]++ , acc) : (acc[cur] = 1, acc), {});
 
         let obj = inputArr.reduce((acc, [a, ...b]) => acc[new Date(a).toDateString()] ? (acc[new Date(a).toDateString()] = acc[new Date(a).toDateString()].map((_, i, d) => (b[i] + d[i])), acc) : (acc[new Date(a).toDateString()] = b, acc), {});
 
         for (let o in obj) {
+          if (obj[o].length <= 0 || !obj[o]) return;
           obj[o] = obj[o].map((el, i) => i === 0 ? el : Math.round(100 * el / count[o]) / 100);
         }
 
@@ -287,43 +317,19 @@ export default new Vuex.Store({
       };
       state.statsData = func(resultArr);
     },
-    GET_ANONYMOUS_USER_RESULTS(state) {
-      state.anonymousUserResults = localStorage.getItem('typingData') ? JSON.parse(localStorage.getItem('typingData')) : {};
-    },
     UPDATE_ANONYMOUS_USER_RESULTS(state) {
-      let typingData = localStorage.getItem('typingData') ? JSON.parse(localStorage.getItem('typingData')) : {};
-      /* 
-      typingDate = [
-        [date, time, speed, error],
-        [date, time,speed, error]
-      ]
-      */
+      let typingData = localStorage.getItem('typingData') ? JSON.parse(localStorage.getItem('typingData')) : [];
       typingData.push([new Date(), state.time.allotted, state.speed, state.error]);
       state.anonymousUserResults = typingData;
       localStorage.setItem('typingData', JSON.stringify(typingData));
+    },
+    GET_ANONYMOUS_USER_RESULTS(state) {
+      state.anonymousUserResults = localStorage.getItem('typingData') ? JSON.parse(localStorage.getItem('typingData')) : {};
     },
     NOTIFY(state, notification = { message: '', type: '' }) {
       state.notification.display = true;
       state.notification.message = notification.message;
       state.notification.type = notification.type;
-    },
-    SET_USER_LOG_IN(state, logIn = true) {
-      state.userLogIn = logIn;
-    },
-    SET_TYPINGTEXT_FROM_FIRESTORE(state, dataObj) {
-      if (Object.keys(dataObj.data).length <= 0) return;
-      Object.keys(dataObj.data).map(el => {
-        switch (dataObj.key) {
-          case 'words':
-            state.typingText.words[el] = dataObj.data[el].join('').split(','); break;
-          case 'sentences':
-            state.typingText.sentences[el] = dataObj.data[el];
-            break;
-          default:
-            state.typingText[dataObj.key][el] = dataObj.data[el];
-            break;
-        }
-      });
     },
   },
   actions: {
