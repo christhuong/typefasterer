@@ -2,7 +2,7 @@
 
 typefasterer is a Vue webapp that helps people practice typing faster with ten fingers.
 
-[Live demo here](typefasterer.com "Type Fasterer webapp")
+[Live demo here](https://typefasterer.com "Type Fasterer webapp")
  
 ## Project setup
 ```
