@@ -35,11 +35,10 @@ export default {
       updateStatsData: 'updateStatsData',
     }),
     currentRowClass(i) {
-      if (i !== 0) return;
-      return {
+      if (i === 0) return {
         'current': true,
-        'green-border': this.congrats,
-        'red-border': !this.congrats,
+        'green-border': this.congrats || this.results.length === 1,
+        'red-border': !this.congrats && this.results.length !== 1,
       }
     },
   },
@@ -65,7 +64,7 @@ export default {
       return this.statsResults ? this.statsResults.map(el => Math.round(el[3])) : []
     },
     congrats() {
-      return this.speed[0] >= this.speed[1] && this.error[0] <= this.error[1] || this.results.length === 1;
+      return this.speed[0] >= this.speed[1] && this.error[0] <= this.error[1];
     },
     resultLength() {
       return this.results.length;
@@ -75,10 +74,10 @@ export default {
     resultLength() {
       if (this.congrats) {
         this.notify({type: 'success', message: 'Congrats! You made an improvement!'})
-      } else if (this.congrats && this.results.length === 1) {
-        this.notify({type: 'success', message: 'Congrats! You did your first exercise! You can type even faster with more practice!'})
-      } else {
+      } else if (!this.congrats && this.results.length !== 1) {
         this.notify({type: 'error', message: 'You did type faster and made less error than this! Try harder!'})
+        } else {
+        this.notify({type: 'success', message: 'Congrats! You did your first exercise! You can type even faster with more practice!'})
       }
     }
   },

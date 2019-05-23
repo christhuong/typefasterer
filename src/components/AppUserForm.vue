@@ -2,7 +2,7 @@
 .app-user-form
   .app-user-inputs
     span.exit-icon(@click="goback()")
-
+    .title.green.bold {{resettingPassword ? 'Reset your password' : (mode === 'login' ? 'Log in your account' : 'Create an account')}}
     //Email and password inputs
     .user-email.user-input
       label(for="email") email #[span(class='red') *] 
@@ -29,15 +29,15 @@
     template(v-if="mode === 'login' && !resettingPassword")
       .more-info
         p Not have an account yet? 
-          span.blue(@click="$router.push('/signup')") #[u Sign up]
+          span.blue.bold(@click="$router.push('/signup')") #[u Sign up]
         p Forget your password? 
-          span.blue(@click="resettingPassword = true") #[u Recover password]
+          span.blue.bold(@click="resettingPassword = true") #[u Recover password]
     p.more-info(v-if="mode === 'signup' && !resettingPassword") Already have an account? 
-      span.blue(@click="$router.push('/login')") #[u Log in]
+      span.blue.bold(@click="$router.push('/login')") #[u Log in]
     p.more-info(v-if="resettingPassword") {{recoverMessage}}
 
     //Sign up or Log in button
-    button.green-border.green.solid-border(@click="handleClick" type='submit') {{ resettingPassword ? 'Sent recover email' : (mode === 'signup' ? 'Sign up' : 'Log in')}}
+    button.green-border.green.solid-border(@click.once="handleClick" type="submit" :disabled="disabled") {{ resettingPassword ? 'Sent recover email' : (mode === 'signup' ? 'Sign up' : 'Log in')}}
 </template>
 
 <script>
@@ -61,6 +61,7 @@ export default {
       validatedPassword: false,
       resettingPassword: false,
       recoverEmailSent: false,
+      disabled: false,
     }
   },
   methods: {
@@ -77,13 +78,18 @@ export default {
     },
     recoverPassword() {
       if (!this.validatedEmail) return;
+      this.setDisplayLoading(true);
+      this.disabled = true;
       firebase.auth()
       .sendPasswordResetEmail(this.email)
       .then(() => {
         this.recoverEmailSent = true;
+        this.setDisplayLoading(false)
         this.notify({type: 'success', message: 'Successfully sent a recovery email to you'})
       }).catch((error) => {
-        this.notify({type: 'error', message: error.meassage})
+        this.setDisplayLoading(false);
+        this.disabled = false;
+        this.notify({type: 'error', message: error.message})
       });
     },
     validateEmail(force = true) {
@@ -204,17 +210,11 @@ export default {
   top: 0
   left: 0
   .app-user-inputs
-    .more-info
-      width: 20rem
-      text-align: left
-      font-size: 0.75rem
-      span
-        cursor: pointer
     position: absolute
     top: 50%
     left: 50%
     transform: translate(-50%, -50%)
-    width: 25rem
+    width: 28rem
     height: auto
     display: grid
     align-content: center
@@ -224,8 +224,18 @@ export default {
     padding: 2rem 1rem
     grid-gap: 1rem
     grid-template-columns: 1fr
-    grid-template-rows: 2fr 2fr 1fr 1fr
+    grid-template-rows: 1fr 2fr 2fr 1fr 1fr
     border-radius: 10px
+    .more-info
+      width: 20rem
+      text-align: left
+      font-size: 0.75rem
+      span
+        cursor: pointer
+    .title
+      width: 20rem
+      font-size: 1.5rem
+      text-align: left
     .user-input
       text-align: left
       label
@@ -235,7 +245,9 @@ export default {
       input
         background: transparent
     button
-      padding: 0.5rem 1rem
+      width: auto
+      height: 2.5rem
+      padding: 0 1rem
       border-radius: 5px
       border-width: 1px
       margin: auto

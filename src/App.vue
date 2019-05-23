@@ -1,7 +1,7 @@
 <template>
-  <div id="app" v-bind:class="{'light': app.theme === 'light'}">
-    <MobileView v-if="isMobile"/>
-    <div v-else>
+  <div id="app" v-bind:class="{'light': app.theme === 'light', 'mobile': isMobile}">
+    <!-- <MobileView v-if="isMobile"/> -->
+    <div>
       <div id="nav">
         <router-link id='logo' to="/about">fasterer</router-link>
         <router-link to="/test">Test</router-link>
@@ -17,8 +17,8 @@
       <app-notification/>
       <app-loading/>
       <app-tips class="app-tip-main" v-if="showTips">
-        You are not logged in. <br>
-        <a @click="setDisplayTips(false)" href="/signup" class="bold blue">Sign up</a> or <a @click="setDisplayTips(false)" href="/login" class="bold blue">Log in</a> now to save your data and access it everywhere!
+        Do you have an account yet? <br> 
+        <a @click="setDisplayTips(false)" href="/signup" class="bold blue underline">Sign up</a> or <a @click="setDisplayTips(false)" href="/login" class="bold blue underline">Log in</a> now to save your typing data and get access to it everywhere!
       </app-tips>
     </div>
   </div>
@@ -92,10 +92,9 @@ export default {
   overflow-x: hidden
 .app-tip-main
   position: absolute
-  top: 50%
-  left: 50%
+  top: 30%
+  left: 55%
   z-index: 99
-  // transform: translate(0, 0)
   
 #logo
   position: absolute

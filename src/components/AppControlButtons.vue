@@ -49,7 +49,8 @@ export default {
     return {
       counting: false,
       countInterval: null,
-      endSession: false
+      endSession: false,
+      firstKeyPressed: false,
     }
   },
   methods: {
@@ -58,17 +59,17 @@ export default {
       this.appReset();
       this.appStart();
       this.setActiveFinger(this.activefinger(this.text[this.index].toLowerCase()))
-      this.startTimer();
+      // this.startTimer();
     },
     pause() {
       this.removeKeyEventListeners();
       this.appPause();
       this.pauseTimer();
+      this.firstKeyPressed = false;
     },
     resume() {
       this.addKeyEventListeners();
       this.appResume();
-      this.startTimer();
     },
     end() {
       this.removeKeyEventListeners();
@@ -78,6 +79,7 @@ export default {
       this.setDisplayResult(true);
     },
     reset() {
+      this.firstKeyPressed = false;
       this.pauseTimer();
       this.appReset();
       this.shuffle();
@@ -117,6 +119,8 @@ export default {
       document.removeEventListener('keyup', this.handleKeyUp);
     },
     handleKeyDown(event) {
+      if (!this.firstKeyPressed) this.startTimer();
+      this.firstKeyPressed = true;
       event.preventDefault();
       this.capslockPressed(event.getModifierState('CapsLock'));
       this.shiftPressed(event.getModifierState('Shift'));
@@ -127,7 +131,11 @@ export default {
         case 'wakeup': eventKey = 'fn'; break;
         default: eventKey = eventKey; break;
       }; 
-      if (this.enAllKeys.indexOf(eventKey) === -1) return;
+      if (eventKey === 'backspace') {
+        this.back();
+        return;
+      }
+      if (!this.enAllKeys.includes(eventKey)) return;
       this.addPressedKeys(eventKey);
       this.next(event.key);
     },
@@ -151,6 +159,12 @@ export default {
       this.addActiveKeys(this.text[this.index].toLowerCase());
       this.setActiveFinger(this.activefinger(this.text[this.index].toLowerCase()))
     },
+    back() {
+      this.redoCheckCorrect();
+      this.clearActiveKeys(this.activeKeys.includes('caps'));
+      this.addActiveKeys(this.text[this.index].toLowerCase());
+      this.setActiveFinger(this.activefinger(this.text[this.index].toLowerCase()));
+    },
     activefinger(keyName) {
       if ('`1~!qaz'.includes(keyName)) return 'left little';
       if ('2wsx@'.includes(keyName)) return 'left ring';
@@ -170,6 +184,7 @@ export default {
       shiftPressed: 'SHIFT_PRESSED',
       capslockPressed: 'CAPSLOCK_PRESSED',
       checkCorrect: 'CHECK_CORRECT',
+      redoCheckCorrect: 'REDO_CHECK_CORRECT',
       appStart: 'APP_START',
       appPause: 'APP_PAUSE',
       appResume: 'APP_RESUME',
@@ -179,7 +194,7 @@ export default {
       calculate: 'CALCULATE',
       setTimeLeft: 'SET_TIME_LEFT',
       setDisplayResult: 'SET_DISPLAY_RESULT',
-      setActiveFinger: 'SET_ACTIVE_FINGER'
+      setActiveFinger: 'SET_ACTIVE_FINGER',
     }),
     ...mapActions({
       updateResults: 'updateResults',

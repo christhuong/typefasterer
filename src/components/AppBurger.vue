@@ -61,7 +61,7 @@ export default {
     logOut() {
       firebase.auth().signOut().then(() => {
         this.notify({type: 'success', message: 'You are logged out!'})
-        this.$router.push('/')
+        // this.$router.push('/')
       })
     }
   },
@@ -89,42 +89,42 @@ export default {
     top: 0
     left: 0
     position: absolute
-    .app-options-choice
-      .user-info
-        display: grid
-        grid-template-rows: 1fr 2fr
-        grid-template-columns: 1fr
-        grid-gap: 0.5rem
-        align-content: center
-        justify-content: center
-        align-items: center
-        justify-items: center
-        .name
-          align-self: start
-          justify-self: start
-          max-width: 12rem
-          overflow: hidden
-          text-overflow: ellipsis
-      .user-btns
-        margin-top: 0.5rem
-        display: grid
-        grid-template-rows: 1fr
-        grid-template-columns: 1fr 1fr
-        grid-gap: 0.5rem
-        align-content: center
-        justify-content: center
-        align-items: center
-        justify-items: center
-      .user-btn
-        height: 2.5rem
-        width: 6rem
-        padding: 0 0.5rem
-        border-radius: 5px
-        font-size: 1rem
-        background: none
-        vertical-align: middle
-        text-align: center
-        margin: 0
-        cursor: pointer
-        border-width: 1px
+  .app-options-choice
+    .user-info
+      display: grid
+      grid-template-rows: 1fr 2fr
+      grid-template-columns: 1fr
+      grid-gap: 0.5rem
+      align-content: center
+      justify-content: center
+      align-items: center
+      justify-items: center
+    .name
+      align-self: start
+      justify-self: start
+      max-width: 12rem
+      overflow: hidden
+      text-overflow: ellipsis
+    .user-btns
+      margin-top: 0.5rem
+      display: grid
+      grid-template-rows: 1fr
+      grid-template-columns: 1fr 1fr
+      grid-gap: 0.5rem
+      align-content: center
+      justify-content: center
+      align-items: center
+      justify-items: center
+    .user-btn
+      height: 2.5rem
+      width: 6rem
+      padding: 0 0.5rem
+      border-radius: 5px
+      font-size: 1rem
+      background: none
+      vertical-align: middle
+      text-align: center
+      margin: 0
+      cursor: pointer
+      border-width: 1px
 </style>

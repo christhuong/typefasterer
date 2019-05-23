@@ -62,13 +62,4 @@ export default {
     width: 6rem
     .select-options-panel
       right: -150%
-button
-  display: inline-block
-  margin-left: 5px
-  transition: all 1s
-.button-ctrl-enter, .button-ctrl-leave-to
-  opacity: 0
-  transform: translateX(20px)
-.button-ctrl-leave-active
-  position: absolute
 </style>

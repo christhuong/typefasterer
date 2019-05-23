@@ -1,6 +1,5 @@
 <template lang='pug'>
 #stats.stats
-  //- .fact(v-html="fact")
   .result
     .total-time.blue
       .value.tooltip {{`0${Math.floor(totalTime/60/60)}`.slice(-2)}}#[sup h]{{`0${Math.round((totalTime/60)%60)}`.slice(-2)}}#[sup m]
@@ -16,12 +15,6 @@
         .tooltip-text Good if lower than 5%
         animated-number(:value="averageError" :unit="'%'")
       .label average error rate 
-  .time-bar-wrapper
-    .result-label(
-      :style="timeBarLabelStyle"
-      v-html="timeBarLabelText")
-    .time-progress-bar
-      .time-progress-bar-inner(:style="timeBarStyle")
   transition(name="select-options")    
     AppTips(v-if="statsResults.length <= 0") Your results and insights will be displayed here
 
@@ -34,8 +27,8 @@
       .result-cell(v-for="(arr, name, index) in refinedStatsData")
         .result-label
           div {{Math.round(arr[0]/60)}}m
-          div {{arr[1]}}
-          div {{arr[2]}}%
+          div {{arr[1].toFixed(1)}}
+          div {{arr[2].toFixed(1)}}%
         .date-row {{name.split(" ")[2]}}
           sup {{name.split(' ')[1]}}
         .result-col.time-col(:style="styleClass(0, arr)")
@@ -106,25 +99,6 @@ export default {
       let error = this.statsResults.length > 0 ? Math.max(...this.statsResults.map(el => parseInt(el[3]))) : 0;
       return error;
     },
-    timeBarStyle() {
-      return {
-        transform: `scaleX(${this.totalTime/(60*60*60)})`
-      }
-    },
-    timeBarLabelStyle() {
-      return {
-        left: `${100*this.totalTime/(60*60*60)}%`,
-      }
-    },
-    timeBarLabelText() {
-      let lefttime = 60*60*60 - this.totalTime;
-      let hours = `0${Math.floor(lefttime/60/60)}`.slice(-2);
-      let minutes = `0${Math.round((lefttime/60)%60)}`.slice(-2);
-      return `
-      <p>
-      <span class="bold blue">${hours}:${minutes}</span> left to <br> type <span class="green-text">60</span> wpm
-      </p>`
-    },
     refinedStatsData() {
       const f = obj => {
         const k = 86400000;
@@ -164,42 +138,6 @@ export default {
   grid-gap: 2rem
   align-content: center
   justify-content: center
-.time-bar-wrapper
-  height: 2rem
-  width: 80vw
-  align-self: start
-  justify-self: center
-  position: relative
-  margin-top: 4rem
-  &:after
-    content: '60h'
-    color: $blue
-    font-weight: bold
-    display: block
-    position: absolute
-    left: calc(100% + 1rem)
-    bottom: 100%
-    transform: translateY(50%)
-  .result-label
-    height: auto
-    width: auto
-    padding: 0.5rem 1rem
-    display: grid
-    grid-template-rows: 1fr
-    grid-template-columns: 1fr
-    align-content: center
-    justify-content: center
-    opacity: 1
-    left: 0
-    bottom: calc(100% + 1rem)
-    transition: left 1s ease
-    transform: translateX(-50%)
-  .time-bar
-    height: 0.5rem
-    border-radius: 999px
-    overflow: hidden
-    .time-bar-inner
-      transform: scaleX(0.5)
 .result
   align-self: end
   justify-self: center

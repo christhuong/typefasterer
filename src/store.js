@@ -8,41 +8,38 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     //TEXT RELATED
-    currentChar: 0, //current index of the text being typed
+    currentChar: 0, 
     activeFinger: '',
     defaultText: "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.Et harum quidem rerum facilis est et expedita distinctio.Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae.Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.",
     chosenText: [],
-    typingMode: 'keyboard', //typing mode for practice
-    textToType: "", //the text that will be rendered to the display
-    enAllKeys: "`1234567890-=~!@#$%^&*()_+backtabqwertyuiop[]\\{}|asdfghjkl;':\"enterzxcvbnm,./<>?fnctrlaltspace ", //all the keys on the english keyboard
+    typingMode: 'keyboard', 
+    textToType: "", 
+    enAllKeys: "`1234567890-=~!@#$%^&*()_+backspacetabqwertyuiop[]\\{}|asdfghjkl;':\"enterzxcvbnm,./<>?fnctrlaltspace ", 
 
     time: {
       allotted: 60,
       left: 0
     },
 
-    errorIndices: [], //the array of all typing errors
-    correctCharCount: 0, //indicates the number of correct typed keys
-    wrongCharCount: 0, //indicates the number of correct typed keys
-    speed: 0, //typing speed
-    error: 0, //typing error rate
+    errorIndices: [],
+    correctCharCount: 0, 
+    wrongCharCount: 0, 
+    speed: 0, 
+    error: 0,
 
     //KEYBOARD STATES
-    pressedKeys: [], //all pressed keys
-    activeKeys: [], //all active keys
-    grayScale: true, //if the keyboard is gray
-    shiftKeyActive: false, //if the shift key is pressed
-    uppercaseOn: false, //
+    pressedKeys: [], 
+    activeKeys: [], 
+    grayScale: true, 
+    shiftKeyActive: false, 
+    uppercaseOn: false,
     displaySymbols: false,
 
-    displayResult: false, //display result panel or not
+    displayResult: false, 
     displayBurger: false,
-    displayOptions: false, //display the typing mode panel
+    displayOptions: false, 
     displayLoading: false,
     displayTips: true,
-
-    byWord: false, //type by word or by letters
-
 
     //FROM FIREBASE
     typingText: {
@@ -80,7 +77,7 @@ export default new Vuex.Store({
     currentUserResults: [],
 
     //LOCAL STORAGE
-    anonymousUserResults: [], //typing results saved in localstorage
+    anonymousUserResults: [],
 
     //STATS
     statsResults: [],
@@ -185,7 +182,7 @@ export default new Vuex.Store({
         }
       });
     },
-    
+
     //KEYBOARD
     SHIFT_PRESSED(state, payload) {
       state.shiftKeyActive = payload;
@@ -243,17 +240,29 @@ export default new Vuex.Store({
       state.app.beforeRestart = true;
       state.activeKeys = [];
     },
-
     CHECK_CORRECT(state, key) {
       if (key === state.textToType[state.currentChar]) {
         state.correctCharCount++;
-        state.currentChar += 1;
+        state.currentChar++;
         if (state.currentChar >= state.textToType.length) {
           state.textToType = state.textToType + ' ' + state.textToType;
         }
       } else {
-        state.wrongCharCount++;
         state.errorIndices.includes(state.currentChar) || state.errorIndices.push(state.currentChar);
+        state.currentChar++;
+        state.wrongCharCount++;
+      }
+    },
+    REDO_CHECK_CORRECT(state) {
+      state.currentChar--;
+      if (state.currentChar <= 0) state.currentChar = 0;
+      if (state.errorIndices[state.errorIndices.length - 1] !== state.currentChar) {
+        state.correctCharCount--;
+        if (state.correctCharCount <= 0) state.correctCharCount = 0;
+      } else {
+        state.errorIndices.pop();
+        state.wrongCharCount--;
+        if (state.wrongCharCount <= 0) state.wrongCharCount = 0;
       }
     },
     CHANGE_APP_MODE(state, mode = 'practice') {
@@ -278,6 +287,7 @@ export default new Vuex.Store({
         state.textToType = shuff(state.textToType.split(' ')).join(' ');
       }
     },
+    
     //TOGGLE
     TOGGLE_KB_COLOR(state) {
       state.grayScale = !state.grayScale;
@@ -317,20 +327,29 @@ export default new Vuex.Store({
       };
       state.statsData = func(resultArr);
     },
+    GET_ANONYMOUS_USER_RESULTS(state) {
+      state.anonymousUserResults = localStorage.getItem('typingData') ? JSON.parse(localStorage.getItem('typingData')) : {};
+    },
     UPDATE_ANONYMOUS_USER_RESULTS(state) {
       let typingData = localStorage.getItem('typingData') ? JSON.parse(localStorage.getItem('typingData')) : [];
+      /* 
+      typingDate = [
+        [date, time, speed, error],
+        [date, time,speed, error]
+      ]
+      */
       typingData.push([new Date(), state.time.allotted, state.speed, state.error]);
       state.anonymousUserResults = typingData;
       localStorage.setItem('typingData', JSON.stringify(typingData));
-    },
-    GET_ANONYMOUS_USER_RESULTS(state) {
-      state.anonymousUserResults = localStorage.getItem('typingData') ? JSON.parse(localStorage.getItem('typingData')) : {};
     },
     NOTIFY(state, notification = { message: '', type: '' }) {
       state.notification.display = true;
       state.notification.message = notification.message;
       state.notification.type = notification.type;
     },
+  },
+  getters: {
+
   },
   actions: {
     createUserAccount(_, id) {
@@ -356,8 +375,10 @@ export default new Vuex.Store({
     },
     getCurrentUserResults({ commit, state }) {
       db.collection('users').doc(state.currentUser.id).get().then(doc => {
-        let typingData = doc.data().typingData !== '' ? JSON.parse(doc.data().typingData) : [];
+        let typingData = doc.data().typingData ? JSON.parse(doc.data().typingData) : [];
         commit('SET_CURRENT_USER_RESULTS', typingData);
+      }).catch(error => {
+        console.error(error);
       });
     },
     updateResults({ commit, dispatch, state }) {

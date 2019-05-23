@@ -1,7 +1,7 @@
 <template lang="pug">
 transition(name="select-options" appear)
   .app-tips(v-if="showTip")
-    span.exit-icon(v-if="!noExit" @click="showTip = false")
+    span.exit-icon(@click="showTip = false")
     .tip-icon
       svg.bulb(
         xmlns="http://www.w3.org/2000/svg" 
@@ -26,14 +26,6 @@ export default {
       showTip: true,
     }
   },
-  props: {
-    noExit: {
-      type: Boolean,
-      required: false
-    }
-  },
-  computed: {
-  }
 }
 </script>
 
@@ -46,7 +38,6 @@ export default {
   padding: 20px
   box-shadow: 1px 3px 10px rgba(#000000, 0.16)
   text-align: left
-  .tip-icon
   .bulb
     height: 1.5rem
     width: auto

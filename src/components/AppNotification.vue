@@ -53,6 +53,7 @@ export default {
   height: auto
   width: 80vw
   pointer-events: none
+  font-size: 1.5rem
 .notification-enter-active
   transition: all .3s ease
 .notification-leave-active
