@@ -3,6 +3,7 @@
   .app-options(
     :class="{'gray': app.running && !app.paused}" 
     @click.stop
+    v-if="!isMobile"
     )
     svg.optionsIcon(
       xmlns="http://www.w3.org/2000/svg" 
@@ -72,13 +73,13 @@
       :value="error" 
       unit="%"
       )
-  TypingModeControl
+  TypingModeControl(v-if="!isMobile")
 </template>
 
 <script>
 import TypingModeControl from './TypingModeControl.vue'
 import AnimatedNumber from './AnimatedNumber.vue'
-import {mapState, mapMutations} from 'vuex'
+import {mapState, mapMutations, mapGetters} from 'vuex'
 
 export default {
   name: 'ControlPanel',
@@ -120,6 +121,9 @@ export default {
       app: 'app',
       grayScale: 'grayScale',
       byWord: 'byWord',
+    }),
+    ...mapGetters({
+      isMobile: 'isMobile',
     }),
     timeString() {
       return `${('0' + Math.floor(this.time.left/60)).slice(-2)}:${('0' + this.time.left%60).slice(-2)}`;

@@ -5,12 +5,26 @@ import { auth } from 'firebase/app'
 
 Vue.use(Vuex)
 
+const refineStats = inputArr => {
+  if (inputArr.length <= 0 || !inputArr.length) return;
+  let count = inputArr.map(el => new Date(el[0]).toDateString()).reduce((acc, cur) => acc[cur] ? (acc[cur]++ , acc) : (acc[cur] = 1, acc), {});
+
+  let obj = inputArr.reduce((acc, [a, ...b]) => acc[new Date(a).toDateString()] ? (acc[new Date(a).toDateString()] = acc[new Date(a).toDateString()].map((_, i, d) => (b[i] + d[i])), acc) : (acc[new Date(a).toDateString()] = b, acc), {});
+
+  for (let o in obj) {
+    if (obj[o].length <= 0 || !obj[o]) return;
+    obj[o] = obj[o].map((el, i) => i === 0 ? el : Math.round(100 * el / count[o]) / 100);
+  }
+  let keys = Object.keys(obj).sort((a, b) => new Date(a) - new Date(b));
+  return keys.reduce((acc, cur) => (acc[cur] = obj[cur], acc), {});
+};
+
 export default new Vuex.Store({
   state: {
     //TEXT RELATED
     currentChar: 0, 
     activeFinger: '',
-    defaultText: "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.Et harum quidem rerum facilis est et expedita distinctio.Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae.Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.",
+    defaultText: "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga .Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.",
     chosenText: [],
     typingMode: 'keyboard', 
     textToType: "", 
@@ -75,13 +89,17 @@ export default new Vuex.Store({
     userLogIn: false,
     currentUser: {},
     currentUserResults: [],
+    currentUserResultsMobile: [], //TODO
 
     //LOCAL STORAGE
     anonymousUserResults: [],
+    anonymousUserResultsMobile: [], //TODO
 
     //STATS
     statsResults: [],
+    statsResultsMobile: [], //TODO
     statsData: {},
+    statsDataMobile: {}, //TODO
   },
   mutations: {
     // ADD
@@ -107,9 +125,6 @@ export default new Vuex.Store({
     CLEAR_NOTIFICATION(state) {
       state.notification.display = false;
     },
-    CLEAR_CURRENT_USER_RESULTS(state) {
-      state.currentUserResults = {};
-    },
     CLEAR_CURRENT_USER(state) {
       state.currentUser = {};
     },
@@ -134,8 +149,11 @@ export default new Vuex.Store({
     SET_CURRENT_USER(state, user = {}) {
       state.currentUser = user;
     },
-    SET_CURRENT_USER_RESULTS(state, userData = {}) {
+    SET_CURRENT_USER_RESULTS(state, userData = []) {
       state.currentUserResults = userData;
+    },
+    SET_CURRENT_USER_RESULTS_MOBILE(state, userData = []) {
+      state.currentUserResultsMobile = userData;
     },
     SET_DISPLAY_LOADING(state, loading = true) {
       state.displayLoading = loading
@@ -307,40 +325,31 @@ export default new Vuex.Store({
         state.app.theme = (date >= 6 && date <= 18) ? 'light' : 'dark';
       }
     },
-    UPDATE_STATS_DATA(state, resultArr) {
+    UPDATE_STATS_DATA(state, resultArr = []) {
       if (resultArr.length <= 0 || !resultArr.length) return;
       state.statsResults = resultArr;
-      const func = inputArr => {
-        if (inputArr.length <= 0 || !inputArr.length) return;
-        let count = inputArr.map(el => new Date(el[0]).toDateString()).reduce((acc, cur) => acc[cur] ? (acc[cur]++ , acc) : (acc[cur] = 1, acc), {});
-
-        let obj = inputArr.reduce((acc, [a, ...b]) => acc[new Date(a).toDateString()] ? (acc[new Date(a).toDateString()] = acc[new Date(a).toDateString()].map((_, i, d) => (b[i] + d[i])), acc) : (acc[new Date(a).toDateString()] = b, acc), {});
-
-        for (let o in obj) {
-          if (obj[o].length <= 0 || !obj[o]) return;
-          obj[o] = obj[o].map((el, i) => i === 0 ? el : Math.round(100 * el / count[o]) / 100);
-        }
-
-        let keys = Object.keys(obj).sort((a, b) => new Date(a) - new Date(b));
-
-        return keys.reduce((acc, cur) => (acc[cur] = obj[cur], acc), {});
-      };
-      state.statsData = func(resultArr);
+      state.statsData = refineStats(resultArr);
+    },
+    UPDATE_STATS_DATA_MOBILE(state, resultArr = []) {
+      if (resultArr.length <= 0 || !resultArr.length) return;
+      state.statsResultsMobile = resultArr;
+      state.statsDataMobile = refineStats(resultArr);
     },
     GET_ANONYMOUS_USER_RESULTS(state) {
-      state.anonymousUserResults = localStorage.getItem('typingData') ? JSON.parse(localStorage.getItem('typingData')) : {};
+      state.anonymousUserResults = localStorage.getItem('typingData') ? JSON.parse(localStorage.getItem('typingData')) : [];
+      state.anonymousUserResultsMobile = localStorage.getItem('typingDataMobile') ? JSON.parse(localStorage.getItem('typingDataMobile')) : [];
     },
     UPDATE_ANONYMOUS_USER_RESULTS(state) {
       let typingData = localStorage.getItem('typingData') ? JSON.parse(localStorage.getItem('typingData')) : [];
-      /* 
-      typingDate = [
-        [date, time, speed, error],
-        [date, time,speed, error]
-      ]
-      */
       typingData.push([new Date(), state.time.allotted, state.speed, state.error]);
       state.anonymousUserResults = typingData;
       localStorage.setItem('typingData', JSON.stringify(typingData));
+    },
+    UPDATE_ANONYMOUS_USER_RESULTS_MOBILE(state) {
+      let typingDataMobile = localStorage.getItem('typingDataMobile') ? JSON.parse(localStorage.getItem('typingDataMobile')) : [];
+      typingDataMobile.push([new Date(), state.time.allotted, state.speed, state.error]);
+      state.anonymousUserResultsMobile = typingDataMobile;
+      localStorage.setItem('typingDataMobile', JSON.stringify(typingDataMobile));
     },
     NOTIFY(state, notification = { message: '', type: '' }) {
       state.notification.display = true;
@@ -349,12 +358,22 @@ export default new Vuex.Store({
     },
   },
   getters: {
-
+    isMobile() {
+      return Boolean(
+        navigator.userAgent.match(/Android/i) ||
+        navigator.userAgent.match(/webOS/i) ||
+        navigator.userAgent.match(/iPhone/i) ||
+        navigator.userAgent.match(/iPad/i) ||
+        navigator.userAgent.match(/iPod/i) ||
+        navigator.userAgent.match(/BlackBerry/i) ||
+        navigator.userAgent.match(/Windows Phone/i))
+    },
   },
   actions: {
     createUserAccount(_, id) {
       db.collection("users").doc(id).set({
-        typingData: ''
+        typingData: '[]',
+        typingDataMobile: '[]',
       });
     },
     getTextFromFirestore({ commit }) {
@@ -365,12 +384,20 @@ export default new Vuex.Store({
         commit('SET_TYPINGTEXT_FROM_FIRESTORE', { data: doc.data(), key: 'sentences' })
       })
     },
-    updateCurrentUserResults({ state }) {
+    updateCurrentUserResults({state}) {
       let typingDataString = state.currentUserResults.length > 0 ? state.currentUserResults : [];
       typingDataString.push([new Date(), state.time.allotted, state.speed, state.error]);
       state.currentUserResults = typingDataString;
       db.collection('users').doc(state.currentUser.id).set({
         typingData: JSON.stringify(typingDataString)
+      });
+    },
+    updateCurrentUserResultsMobile({state}) {
+      let typingDataString = state.currentUserResultsMobile.length > 0 ? state.currentUserResultsMobile : [];
+      typingDataString.push([new Date(), state.time.allotted, state.speed, state.error]);
+      state.currentUserResultsMobile = typingDataString;
+      db.collection('users').doc(state.currentUser.id).set({
+        typingDataMobile: JSON.stringify(typingDataString)
       });
     },
     getCurrentUserResults({ commit, state }) {
@@ -381,20 +408,40 @@ export default new Vuex.Store({
         console.error(error);
       });
     },
-    updateResults({ commit, dispatch, state }) {
+    getCurrentUserResultsMobile({commit, state}) {
+      db.collection('users').doc(state.currentUser.id).get().then(doc => {
+        let typingDataMobile = doc.data().typingDataMobile ? JSON.parse(doc.data().typingDataMobile) : [];
+        commit('SET_CURRENT_USER_RESULTS_MOBILE', typingDataMobile);
+      }).catch(error => {
+        console.error(error);
+      });
+    },
+    updateResults({ commit, dispatch, state, getters }) {
       if (state.userLogIn) {
-        dispatch('updateCurrentUserResults')
+        if (getters.isMobile) {
+          dispatch('updateCurrentUserResultsMobile')
+        } else {
+          dispatch('updateCurrentUserResults')
+        }
       } else {
-        commit('UPDATE_ANONYMOUS_USER_RESULTS')
+        if (getters.isMobile) {
+          commit('UPDATE_ANONYMOUS_USER_RESULTS_MOBILE')
+        } else {
+          commit('UPDATE_ANONYMOUS_USER_RESULTS')
+        }
       }
     },
     updateStatsData({ state, commit, dispatch }) {
       if (state.userLogIn) {
         dispatch('getCurrentUserResults');
-        commit('UPDATE_STATS_DATA', state.currentUserResults)
+        commit('UPDATE_STATS_DATA', state.currentUserResults);
+        dispatch('getCurrentUserResultsMobile');
+        commit('UPDATE_STATS_DATA_MOBILE', state.currentUserResultsMobile);
       } else {
         commit('GET_ANONYMOUS_USER_RESULTS');
-        commit('UPDATE_STATS_DATA', state.anonymousUserResults)
+        commit('UPDATE_STATS_DATA', state.anonymousUserResults);
+        commit('GET_ANONYMOUS_USER_RESULTS');
+        commit('UPDATE_STATS_DATA_MOBILE', state.anonymousUserResultsMobile);
       }
     },
     userObserver({ commit, dispatch }) {

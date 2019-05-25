@@ -1,12 +1,13 @@
 <template lang="pug">
 #test(:class="{'test-mode': app.mode !== 'practice'}")
   .head
-  AnimatedTypingText(:text="cheer").cheer
-  ControlPanel
+  AnimatedTypingText(:text="cheer").cheer(v-if="!isMobile")
   TypingMode(v-if="displayTypingMode")
   AppTextDisplay(v-else-if="!displayResult")
   ResultDisplay(v-else)
+  ControlPanel
   AppControlButtons
+  TypingModeControl(v-if="isMobile")
 </template>
 
 <script>
@@ -16,7 +17,8 @@ import AppControlButtons from '@/components/AppControlButtons.vue'
 import ResultDisplay from '@/components/ResultDisplay.vue'
 import TypingMode from '@/components/TypingMode'
 import AnimatedTypingText from '@/components/AnimatedTypingText.vue'
-import { mapState, mapMutations } from 'vuex'
+import TypingModeControl from '@/components/TypingModeControl.vue'
+import { mapState, mapMutations, mapGetters } from 'vuex'
 
 export default {
   name: 'test',
@@ -27,6 +29,7 @@ export default {
     AppControlButtons,
     ResultDisplay,
     TypingMode,
+    TypingModeControl,
   },
   methods: {
     ...mapMutations({
@@ -38,6 +41,9 @@ export default {
       app: 'app',
       displayResult: 'displayResult',
       displayOptions: 'displayOptions',
+    }),
+    ...mapGetters({
+      isMobile: 'isMobile'
     }),
     displayTypingMode() {
       return !this.displayResult && this.displayOptions;
@@ -65,6 +71,8 @@ export default {
   grid-template-columns: 1fr
   grid-template-areas: 'header' 'cheer' 'panel' 'display' 'btns'
   grid-gap: 1rem
+  align-content: center
+  justify-content: center
   .cheer
     grid-area: cheer
     font-size: 1.75rem
@@ -84,4 +92,8 @@ export default {
     align-self: end
   .app-control-buttons
     grid-area: btns
+  .typing-mode-control
+    grid-area: mode
+    align-self: start
+    justify-self: center
 </style>

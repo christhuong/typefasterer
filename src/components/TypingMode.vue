@@ -246,6 +246,8 @@ export default {
   &.radio
     border-radius: 50%
 .required
+  width: auto
+  white-space: nowrap
   position: absolute
   top: 0.5rem
   left: 50%
@@ -266,6 +268,7 @@ export default {
   position: absolute
   bottom: 0
   right: 0
+  background: none
   transform: translate(-1rem, -1rem)
   transition: color 200ms ease
 .samples

@@ -194,6 +194,7 @@ export default {
       if (this.resettingPassword && !this.recoverEmailSent) {
         return `Enter your email then we will sent you an email to change your password`
       }
+      return ''
     }
   },
   mounted() {

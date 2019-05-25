@@ -3,30 +3,51 @@
   .header
   AppTextDisplay
   ControlPanel
-  AppScreen
+  TypingMode(v-if="displayTypingMode")
+  ResultDisplay(v-else-if="displayResult")
+  AppKeyboard(v-else-if="!isMobile")
   AppControlButtons
+  TypingModeControl(v-if="isMobile")
 </template>
 
 <script>
 // @ is an alias to /src
-import AppTextDisplay from '@/components/AppTextDisplay.vue';
-import ControlPanel from '@/components/ControlPanel.vue';
-import AppControlButtons from '@/components/AppControlButtons.vue';
-import AppScreen from '@/components/AppScreen.vue';
-import { mapState, mapMutations } from 'vuex'
+import AppTextDisplay from '@/components/AppTextDisplay.vue'
+import ControlPanel from '@/components/ControlPanel.vue'
+import AppControlButtons from '@/components/AppControlButtons.vue'
+import TypingModeControl from '@/components/TypingModeControl.vue'
+import AppKeyboard from '@/components/AppKeyboard.vue'
+import ResultDisplay from '@/components/ResultDisplay.vue'
+import TypingMode from '@/components/TypingMode.vue'
+import { mapState, mapMutations, mapGetters } from 'vuex'
 
 export default {
   name: 'home',
   components: {
     ControlPanel,
     AppTextDisplay,
-    AppScreen,
+    AppKeyboard,
     AppControlButtons,
+    TypingModeControl,
+    TypingMode,
+    ResultDisplay,
   },
   methods: {
     ...mapMutations({
       changeAppMode: 'CHANGE_APP_MODE'
     })
+  },
+  computed: {
+    ...mapState({
+      displayResult: 'displayResult',
+      displayOptions: 'displayOptions',
+    }),
+    ...mapGetters({
+      isMobile: 'isMobile',
+    }),
+    displayTypingMode() {
+      return !this.displayResult && this.displayOptions;
+    },
   },
   mounted() {
     this.changeAppMode('practice');
@@ -45,7 +66,7 @@ export default {
   justify-content: center
   grid-template-rows: 2fr 3fr 1fr 5fr 3fr
   grid-template-columns: 1fr
-  grid-template-areas: 'header' 'display' 'panel' 'screen' 'footer'
+  grid-template-areas: 'header' 'display' 'panel' 'screen' 'btns'
   grid-gap: 1rem
   .app-text-display
     grid-area: display
@@ -57,15 +78,12 @@ export default {
     align-self: end
     justify-content: center
     align-content: center
-  .app-screen
+  .app-keyboard, .typing-mode, .result-display
     grid-area: screen
-    align-self: center
-    justify-self: center
-    display: grid
-    align-items: center
-    justify-items: center
-    width: 100%
-    height: 100%
   .app-control-buttons
-    grid-area: footer
+    grid-area: btns
+  .typing-mode-control
+    grid-area: mode
+    align-self: start
+    justify-self: center
 </style>

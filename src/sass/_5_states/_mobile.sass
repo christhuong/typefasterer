@@ -1,0 +1,68 @@
+#app.mobile
+  .screen-children-size
+    width: 80vw
+    min-width: 0
+    height: 40vh
+    min-height: 0
+    &#app-text-display
+      height: 30vh
+  .app-tip-main
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
+  #home
+    grid-template-rows: 1fr 2fr 1fr 2fr 3fr
+    grid-template-areas: 'header' 'display' 'panel' 'btns' 'mode'
+    .app-keyboard, .typing-mode, .result-display
+      grid-area: display
+  #test
+    grid-template-rows: 1fr 2fr 1fr 2fr 3fr
+    grid-template-areas: 'header' 'display' 'panel' 'btns' 'mode'
+  #app-text-display
+    min-width: 0
+    min-height: 0
+    width: 90vw
+    height: 30vh
+  #control-panel
+    min-width: 0
+    &>div
+      margin: 0 0.5rem
+  #logo
+    display: none
+  #typing-mode-control
+    .select-options-panel
+      transform: translateX(-50%)
+      top: -10rem
+      bottom: auto
+      left: 50%
+      right: auto
+      padding: 0.5rem 2rem
+  #typing-mode
+    width: 100vw
+    height: 30vh
+    padding: 0
+    .set-text
+      right: auto
+      left: 50%
+      bottom: 0.5rem
+      transform: translate(-50%, 0)
+    .byCustom textarea
+      width: 80vw
+
+  .stats
+    .result
+      width: 100vw
+      grid-gap: 0
+      .value
+        font-size: 2.5rem
+      
+  #app-burger
+    right: auto
+    left: 50%
+    top: 1rem
+    transform: translate(-50%, 0)
+
+  .app-user-inputs
+    width: 90vw
+    .more-info, .title, #email, #password
+      width: 70vw

@@ -1,5 +1,5 @@
 <template lang="pug">
-#typing-mode-control
+#typing-mode-control.typing-mode-control
   .custom-select.arrow.tooltip(
     @click.stop='handleClick' 
     :class="{'gray': app.running && !app.paused}"

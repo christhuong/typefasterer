@@ -1,43 +1,37 @@
 <template>
   <div id="app" v-bind:class="{'light': app.theme === 'light', 'mobile': isMobile}">
-    <!-- <MobileView v-if="isMobile"/> -->
-    <div>
-      <div id="nav">
-        <router-link id='logo' to="/about">fasterer</router-link>
-        <router-link to="/test">Test</router-link>
-        <router-link to="/">Practice</router-link>
-        <router-link to="/stats">Stats</router-link>
-        <div id='menu-ham' @click.stop="setDisplayBurger(true)">
-          <div class="bar"></div>
-          <div class="bar"></div>
-        </div>
-        <app-burger/>
+    <div id="nav">
+      <router-link id='logo' to="/about">fasterer</router-link>
+      <router-link to="/test">Test</router-link>
+      <router-link to="/">Practice</router-link>
+      <router-link to="/stats">Stats</router-link>
+      <div id='menu-ham' @click.stop="setDisplayBurger(true)">
+        <div class="bar"></div>
+        <div class="bar"></div>
       </div>
-      <router-view/>
-      <app-notification/>
-      <app-loading/>
-      <app-tips class="app-tip-main" v-if="showTips">
-        Do you have an account yet? <br> 
-        <a @click="setDisplayTips(false)" href="/signup" class="bold blue underline">Sign up</a> or <a @click="setDisplayTips(false)" href="/login" class="bold blue underline">Log in</a> now to save your typing data and get access to it everywhere!
-      </app-tips>
+      <app-burger/>
     </div>
+    <router-view/>
+    <app-notification/>
+    <app-loading/>
+    <app-tips class="app-tip-main" v-if="showTips">
+      Do you have an account yet? <br> 
+      <a @click="setDisplayTips(false)" href="/signup" class="bold blue underline">Sign up</a> or <a @click="setDisplayTips(false)" href="/login" class="bold blue underline">Log in</a> now to save your typing data and get access to it everywhere!
+    </app-tips>
   </div>
 </template>
 <script>
-import {mapState, mapMutations, mapActions} from 'vuex'
+import {mapState, mapMutations, mapActions, mapGetters} from 'vuex'
 import AppBurger from './components/AppBurger.vue'
 import AppNotification from './components/AppNotification.vue'
 import AppLoading from './components/AppLoading.vue'
 import AppTips from './components/AppTips.vue'
-import MobileView from './views/MobileView.vue'
-import { setTimeout } from 'timers';
 export default {
   components: {
     AppBurger,
     AppNotification,
     AppLoading,
     AppTips,
-    MobileView,
   },
   methods: {
     ...mapMutations({
@@ -56,16 +50,9 @@ export default {
       userLogIn: 'userLogIn',
       displayTips: 'displayTips',
     }),
-    isMobile() {
-      return Boolean(
-        navigator.userAgent.match(/Android/i) || 
-        navigator.userAgent.match(/webOS/i) || 
-        navigator.userAgent.match(/iPhone/i) || 
-        navigator.userAgent.match(/iPad/i) || 
-        navigator.userAgent.match(/iPod/i) || 
-        navigator.userAgent.match(/BlackBerry/i) || 
-        navigator.userAgent.match(/Windows Phone/i))
-    },
+    ...mapGetters({
+      isMobile: 'isMobile'
+    }),
     showTips() {
       return (!this.userLogIn && this.displayTips);
     },

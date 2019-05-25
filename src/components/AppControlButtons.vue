@@ -1,5 +1,15 @@
 <template lang="pug">
 #app-control-buttons.app-control-buttons
+  input#mobile-input(
+    type="text"
+    v-if="isMobile" 
+    ref="input"
+    autocapitalize="off" 
+    autocomplete="off"
+    spellcheck="false" 
+    autocorrect="off"
+    @input.prevent="handleInput"
+    )
   button.pauseBtn(
     @click="pause()" 
     :disabled="app.paused || !app.running"
@@ -42,7 +52,7 @@
 </template>
 
 <script>
-import {mapState, mapMutations, mapActions} from 'vuex'
+import {mapState, mapMutations, mapActions, mapGetters} from 'vuex'
 export default {
   name: 'AppControlButtons',
   data() {
@@ -51,28 +61,31 @@ export default {
       countInterval: null,
       endSession: false,
       firstKeyPressed: false,
+      mobileInputLength: 0
     }
   },
   methods: {
     start() {
-      this.addKeyEventListeners();
+      if (this.isMobile) this.$refs.input.focus();
+      if (!this.isMobile) this.addKeyEventListeners();
       this.appReset();
       this.appStart();
       this.setActiveFinger(this.activefinger(this.text[this.index].toLowerCase()))
-      // this.startTimer();
     },
     pause() {
-      this.removeKeyEventListeners();
+      if (!this.isMobile) this.removeKeyEventListeners();
       this.appPause();
       this.pauseTimer();
       this.firstKeyPressed = false;
     },
     resume() {
-      this.addKeyEventListeners();
+      if (this.isMobile) this.$refs.input.focus();
+      if (!this.isMobile) this.addKeyEventListeners();
       this.appResume();
     },
     end() {
-      this.removeKeyEventListeners();
+      if (!this.isMobile) this.removeKeyEventListeners();
+      if (this.isMobile) this.$refs.input.value = '';
       this.appEnd();
       this.pauseTimer();
       this.updateResults();
@@ -82,6 +95,7 @@ export default {
       this.firstKeyPressed = false;
       this.pauseTimer();
       this.appReset();
+      this.mobileInputLength = 0;
       this.shuffle();
     },
     startTimer() {
@@ -129,8 +143,8 @@ export default {
         case 'capslock': eventKey = 'caps'; break;
         case 'control': eventKey = 'ctrl'; break;
         case 'wakeup': eventKey = 'fn'; break;
-        default: eventKey = eventKey; break;
-      }; 
+        default: break;
+      } 
       if (eventKey === 'backspace') {
         this.back();
         return;
@@ -148,19 +162,35 @@ export default {
         case 'capslock': eventKey = 'caps'; break;
         case 'control': eventKey = 'ctrl'; break;
         case 'wakeup': eventKey = 'fn'; break;
-        default: eventKey = eventKey; break;
-      };
+        default: break;
+      }
       if (this.enAllKeys.indexOf(eventKey) === -1) return;
       this.clearPressedKeys();
     },
+    handleInput() {
+      if (!this.firstKeyPressed) this.startTimer();
+      this.firstKeyPressed = true;
+      let mobileInput = this.$refs.input.value;
+      // console.log(mobileInput.length)
+      let eventKey = mobileInput[mobileInput.length - 1];
+      if (this.mobileInputLength > mobileInput.length) {
+        this.back();
+        this.mobileInputLength = mobileInput.length;
+      } else {
+        this.checkCorrect(eventKey);
+        this.mobileInputLength = mobileInput.length;
+      }
+    },
     next(key) {
       this.checkCorrect(key);
+      if (this.isMobile) return;
       this.clearActiveKeys(this.activeKeys.includes('caps'));
       this.addActiveKeys(this.text[this.index].toLowerCase());
       this.setActiveFinger(this.activefinger(this.text[this.index].toLowerCase()))
     },
     back() {
       this.redoCheckCorrect();
+      if (this.isMobile) return;
       this.clearActiveKeys(this.activeKeys.includes('caps'));
       this.addActiveKeys(this.text[this.index].toLowerCase());
       this.setActiveFinger(this.activefinger(this.text[this.index].toLowerCase()));
@@ -208,6 +238,9 @@ export default {
       enAllKeys: 'enAllKeys',
       app: 'app',
       time: 'time',
+    }),
+    ...mapGetters({
+      isMobile: 'isMobile',
     })
   },
   mounted() {
@@ -224,6 +257,17 @@ export default {
 <style lang="sass">
 #app-control-buttons
   white-space: nowrap
+  position: relative
+  #mobile-input
+    position: fixed
+    height: 0
+    width: 0
+    opacity: 0
+    top: 20vh
+    left: 50%
+    transform: translate(-50%, 0)
+    user-select: none
+    pointer-events: none
   button
     height: 3.5rem
     width: 3.5rem

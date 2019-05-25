@@ -4,9 +4,9 @@
   span.exit-icon( @click="setDisplayResult(false)" )
   .col-label.result-row
     .date-col Date
-    .time-col Test time
-    .speed-col Words/minute
-    .error-col Error rate
+    .time-col Time
+    .speed-col WPM
+    .error-col Error
   .results-wrapper
     .result-row(
       v-for="(el, i) in results" 
@@ -52,7 +52,7 @@ export default {
     },
     date() {
       return this.statsResults ? this.statsResults.map(el =>
-        new Date(el[0]).toDateString().slice(4)) : []
+        new Date(el[0]).toDateString().slice(4).slice(0, -4)) : []
     },
     time() {
       return this.statsResults ? this.statsResults.map(el => `${Math.round(el[1]/60*100)/100} ${el[1]/60 === 1 ? 'min' : 'mins'}`) : []
