@@ -129,6 +129,7 @@ export default {
   min-width: 36rem
   border-radius: 10px
   h1
+    word-break: break-all
     font-weight: 400
     text-align: left
     overflow-y: auto

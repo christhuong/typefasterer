@@ -3,7 +3,25 @@ import Vuex from "vuex";
 import db from "./configs/firebaseInit";
 import { auth } from "firebase/app";
 
+import { DEFAULT_TEXT, SHIFTED_KEYS, EN_ALL_KEYBOARD_KEYS } from "./data/texts";
+
 Vue.use(Vuex);
+
+export const APP_MODE = { PRACTICE: "practice" };
+
+export const APP_THEME = { LIGHT: "light", DARK: "dark" };
+
+export const TYPING_MODE = {
+  WORDS: "words",
+  KEYBOARD: "keyboard",
+  SENTENCES: "sentences",
+  CUSTOM: "custom"
+};
+
+/*
+ * Super messy app state that I wrote 3 years ago.
+ * -> Definitely need refactoring later.
+ */
 
 const refineStats = inputArr => {
   if (inputArr.length <= 0 || !inputArr.length) return;
@@ -40,13 +58,11 @@ export default new Vuex.Store({
     //TEXT RELATED
     currentChar: 0,
     activeFinger: "",
-    defaultText:
-      "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga .Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.",
+    defaultText: DEFAULT_TEXT,
     chosenText: [],
-    typingMode: "keyboard",
+    typingMode: TYPING_MODE.KEYBOARD,
     textToType: "",
-    enAllKeys:
-      "`1234567890-=~!@#$%^&*()_+backspacetabqwertyuiop[]\\{}|asdfghjkl;':\"enterzxcvbnm,./<>?fnctrlaltspace ",
+    enAllKeys: EN_ALL_KEYBOARD_KEYS,
 
     time: {
       allotted: 60,
@@ -90,11 +106,11 @@ export default new Vuex.Store({
 
     //APP STATES
     app: {
-      mode: "practice",
+      mode: APP_MODE.PRACTICE,
       running: false,
       paused: false,
       beforeRestart: false,
-      theme: "dark"
+      theme: APP_THEME.DARK
     },
 
     notification: {
@@ -130,7 +146,7 @@ export default new Vuex.Store({
     },
     ADD_ACTIVE_KEYS(state, key = state.textToType[state.currentChar]) {
       state.activeKeys.push(key);
-      state.shiftKeyActive = `AQWERTYUIOPASDFGHJKLZXCVBNM~!@#$%^&*()_+{}|:"<>?`.includes(
+      state.shiftKeyActive = SHIFTED_KEYS.includes(
         state.textToType[state.currentChar]
       );
       if (state.shiftKeyActive && state.activeKeys.includes("shift"))
@@ -189,12 +205,15 @@ export default new Vuex.Store({
     SET_DISPLAY_TIPS(state, displaying = false) {
       state.displayTips = displaying;
     },
-    SET_APP_THEME(state, theme = "dark") {
+    SET_APP_THEME(state, theme = APP_THEME.DARK) {
       localStorage.setItem("typingAppTheme", theme);
       state.app.theme = theme;
       document
         .getElementById("theme-color")
-        .setAttribute("content", theme === "light" ? "#eaeaea" : "#000000");
+        .setAttribute(
+          "content",
+          theme === APP_THEME.LIGHT ? "#eaeaea" : "#000000"
+        );
     },
     SET_TEXT(state, textarr) {
       state.textToType = textarr;
@@ -213,10 +232,10 @@ export default new Vuex.Store({
       if (Object.keys(dataObj.data).length <= 0) return;
       Object.keys(dataObj.data).map(el => {
         switch (dataObj.key) {
-          case "words":
+          case TYPING_MODE.WORDS:
             state.typingText.words[el] = dataObj.data[el].join("").split(",");
             break;
-          case "sentences":
+          case TYPING_MODE.SENTENCES:
             state.typingText.sentences[el] = dataObj.data[el];
             break;
           default:
@@ -234,7 +253,7 @@ export default new Vuex.Store({
           ? false
           : true;
       state.displaySymbols = payload;
-      state.shiftKeyActive = `AQWERTYUIOPASDFGHJKLZXCVBNM~!@#$%^&*()_+{}|:"<>?`.includes(
+      state.shiftKeyActive = SHIFTED_KEYS.includes(
         state.textToType[state.currentChar]
       );
       if (state.shiftKeyActive && state.activeKeys.includes("shift"))
@@ -254,6 +273,7 @@ export default new Vuex.Store({
     APP_START(state) {
       state.app.running = true;
       state.app.beforeRestart = false;
+      state.app.paused = false;
       if (state.time.left <= 0) state.time.left = state.time.allotted;
       if (state.textToType === "") state.textToType = state.defaultText;
       state.activeKeys.includes(
@@ -262,7 +282,7 @@ export default new Vuex.Store({
         state.activeKeys.push(
           state.textToType[state.currentChar].toLowerCase()
         );
-      state.shiftKeyActive = `AQWERTYUIOPASDFGHJKLZXCVBNM~!@#$%^&*()_+{}|:'<>?`.includes(
+      state.shiftKeyActive = SHIFTED_KEYS.includes(
         state.textToType[state.currentChar]
       );
       if (state.shiftKeyActive && state.activeKeys.includes("shift"))
@@ -325,7 +345,7 @@ export default new Vuex.Store({
         if (state.wrongCharCount <= 0) state.wrongCharCount = 0;
       }
     },
-    CHANGE_APP_MODE(state, mode = "practice") {
+    CHANGE_APP_MODE(state, mode = APP_MODE.PRACTICE) {
       state.app.mode = mode;
     },
     CALCULATE(state) {
@@ -355,7 +375,10 @@ export default new Vuex.Store({
           self[j] = cur;
           return self;
         }, []);
-      if (state.typingMode === "sentences" || state.typingMode === "custom") {
+      if (
+        state.typingMode === TYPING_MODE.SENTENCES ||
+        state.typingMode === TYPING_MODE.CUSTOM
+      ) {
         return;
       } else {
         state.textToType = shuff(state.textToType.split(" ")).join(" ");
@@ -378,7 +401,8 @@ export default new Vuex.Store({
         return;
       } else {
         let date = new Date().getHours();
-        state.app.theme = date >= 6 && date <= 18 ? "light" : "dark";
+        state.app.theme =
+          date >= 6 && date <= 18 ? APP_THEME.LIGHT : APP_THEME.DARK;
       }
     },
     UPDATE_STATS_DATA(state, resultArr = []) {

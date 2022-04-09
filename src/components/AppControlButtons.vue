@@ -88,6 +88,7 @@ export default {
     end() {
       if (!this.isMobile) this.removeKeyEventListeners();
       if (this.isMobile) this.$refs.input.value = "";
+      this.firstKeyPressed = false;
       this.appEnd();
       this.pauseTimer();
       this.updateResults();
@@ -187,7 +188,6 @@ export default {
       if (!this.firstKeyPressed) this.startTimer();
       this.firstKeyPressed = true;
       let mobileInput = this.$refs.input.value;
-      // console.log(mobileInput.length)
       let eventKey = mobileInput[mobileInput.length - 1];
       if (this.mobileInputLength > mobileInput.length) {
         this.back();
