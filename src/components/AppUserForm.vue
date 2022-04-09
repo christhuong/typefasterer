@@ -5,20 +5,20 @@
     .title.green.bold {{resettingPassword ? 'Reset your password' : (mode === 'login' ? 'Log in your account' : 'Create an account')}}
     //Email and password inputs
     .user-email.user-input
-      label(for="email") email #[span(class='red') *] 
+      label(for="email") email #[span(class='red') *]
       input#email.gray-border.solid-border(
-        type="email" 
-        v-model="email" 
+        type="email"
+        v-model="email"
         @keyup="validateEmail()"
         placeholder="your.email@address.com"
         :class="[validatedEmail ? 'green-border' : (email !== '' && 'red-border')]"
         required
         )
     .user-password.user-input(v-if="!resettingPassword")
-      label(for="password") password #[span(class='red') *] 
+      label(for="password") password #[span(class='red') *]
       input#password.gray-border.solid-border(
-        type="password" 
-        v-model="password" 
+        type="password"
+        v-model="password"
         @keyup="validatePassword()"
         placeholder="at least 6 characters, digits, or symbols"
         :class="[validatedPassword ? 'green-border' : (password !== '' && 'red-border')]"
@@ -28,11 +28,11 @@
     //Additional information
     template(v-if="mode === 'login' && !resettingPassword")
       .more-info
-        p Not have an account yet? 
+        p Not have an account yet?
           span.blue.bold(@click="$router.push('/signup')") #[u Sign up]
-        p Forget your password? 
+        p Forget your password?
           span.blue.bold(@click="resettingPassword = true") #[u Recover password]
-    p.more-info(v-if="mode === 'signup' && !resettingPassword") Already have an account? 
+    p.more-info(v-if="mode === 'signup' && !resettingPassword") Already have an account?
       span.blue.bold(@click="$router.push('/login')") #[u Log in]
     p.more-info(v-if="resettingPassword") {{recoverMessage}}
 
@@ -41,11 +41,11 @@
 </template>
 
 <script>
-import firebase from 'firebase/app'
-import 'firebase/auth'
-import { mapMutations, mapState, mapActions } from 'vuex';
+import firebase from "firebase/app";
+import "firebase/auth";
+import { mapMutations, mapState, mapActions } from "vuex";
 export default {
-  name: 'AppUserForm',
+  name: "AppUserForm",
   props: {
     mode: {
       type: String,
@@ -54,153 +54,164 @@ export default {
   },
   data() {
     return {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
       emailPattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
       validatedEmail: false,
       validatedPassword: false,
       resettingPassword: false,
       recoverEmailSent: false,
-      disabled: false,
-    }
+      disabled: false
+    };
   },
   methods: {
     ...mapMutations({
-      notify: 'NOTIFY',
-      setDisplayLoading: 'SET_DISPLAY_LOADING',
-      setDisplayTips: 'SET_DISPLAY_TIPS',
+      notify: "NOTIFY",
+      setDisplayLoading: "SET_DISPLAY_LOADING",
+      setDisplayTips: "SET_DISPLAY_TIPS"
     }),
     ...mapActions({
-      createUserAccount: 'createUserAccount'
+      createUserAccount: "createUserAccount"
     }),
     goback() {
-      this.$router.push('/')
+      this.$router.push("/");
     },
     recoverPassword() {
       if (!this.validatedEmail) return;
       this.setDisplayLoading(true);
       this.disabled = true;
-      firebase.auth()
-      .sendPasswordResetEmail(this.email)
-      .then(() => {
-        this.recoverEmailSent = true;
-        this.setDisplayLoading(false)
-        this.notify({type: 'success', message: 'Successfully sent a recovery email to you'})
-      }).catch((error) => {
-        this.setDisplayLoading(false);
-        this.disabled = false;
-        this.notify({type: 'error', message: error.message})
-      });
+      firebase
+        .auth()
+        .sendPasswordResetEmail(this.email)
+        .then(() => {
+          this.recoverEmailSent = true;
+          this.setDisplayLoading(false);
+          this.notify({
+            type: "success",
+            message: "Successfully sent a recovery email to you"
+          });
+        })
+        .catch(error => {
+          this.setDisplayLoading(false);
+          this.disabled = false;
+          this.notify({ type: "error", message: error.message });
+        });
     },
     validateEmail(force = true) {
       if (!force) {
         this.validatedEmail = false;
-        return
+        return;
       }
-      let validated = this.email !== '' && this.emailPattern.test(String(this.email).toLowerCase());
+      let validated =
+        this.email !== "" &&
+        this.emailPattern.test(String(this.email).toLowerCase());
       this.validatedEmail = validated;
     },
     validatePassword(force = true) {
       if (!force) {
         this.validatedPassword = false;
-        return
+        return;
       }
-      let validated = this.password !== '' && this.password.length >= 6;
+      let validated = this.password !== "" && this.password.length >= 6;
       this.validatedPassword = validated;
     },
     handleClick() {
       if (this.resettingPassword) {
         this.recoverPassword();
-        return
+        return;
       }
-      if (this.mode === 'login') this.loginUser();
-      if (this.mode === 'signup') this.signupUser();
-      return
+      if (this.mode === "login") this.loginUser();
+      if (this.mode === "signup") this.signupUser();
+      return;
     },
     signupUser() {
       if (!this.validatedEmail || !this.validatedPassword) {
-        let type = 'error';
-        let message = '';
-        if (this.email === '') {
-          message = 'Please fill in your email to sign up'
-        } else if (this.password === '') {
-          message = 'Please enter your password to sign up'
+        let type = "error";
+        let message = "";
+        if (this.email === "") {
+          message = "Please fill in your email to sign up";
+        } else if (this.password === "") {
+          message = "Please enter your password to sign up";
         } else {
-          message = 'Please enter valid email and password'
+          message = "Please enter valid email and password";
         }
-        this.notify({type, message})
+        this.notify({ type, message });
         return;
       }
-      this.setDisplayLoading(true)
-      firebase.auth()
-      .createUserWithEmailAndPassword(this.email, this.password)
-      .then(
-        () => {
-          this.createUserAccount(firebase.auth().currentUser.uid)
-          this.setDisplayLoading(false)
-          this.notify({type: 'success', message: 'Sign up successfully! Enjoy our app!'})
-        }
-      )
-      .catch((error) => {
-        this.validateEmail(false);
-        this.validatePassword(false);
-        this.setDisplayLoading(false);
-        this.notify({type: 'error', message: error.message});
-      });
+      this.setDisplayLoading(true);
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(this.email, this.password)
+        .then(() => {
+          this.createUserAccount(firebase.auth().currentUser.uid);
+          this.setDisplayLoading(false);
+          this.notify({
+            type: "success",
+            message: "Sign up successfully! Enjoy our app!"
+          });
+        })
+        .catch(error => {
+          this.validateEmail(false);
+          this.validatePassword(false);
+          this.setDisplayLoading(false);
+          this.notify({ type: "error", message: error.message });
+        });
     },
     loginUser() {
       if (!this.validatedEmail || !this.validatedPassword) {
-        let type = 'error';
-        let message = '';
-        if (this.email === '') {
-          message = 'Please fill in your email to log in'
-        } else if (this.password === '') {
-          message = 'Please enter your password to log in'
+        let type = "error";
+        let message = "";
+        if (this.email === "") {
+          message = "Please fill in your email to log in";
+        } else if (this.password === "") {
+          message = "Please enter your password to log in";
         } else {
-          message = 'Please enter your correct email and password'
+          message = "Please enter your correct email and password";
         }
-        this.notify({type, message})
+        this.notify({ type, message });
         return;
       }
-      this.setDisplayLoading(true)
-      firebase.auth()
-      .signInWithEmailAndPassword(this.email, this.password)
-      .then(
-        user => {
-          this.setDisplayLoading(false)
-          this.notify({type: 'success', message: 'Log in successfully! Enjoy our app!'})
-        }
-      )
-      .catch((error) => {
-        this.validateEmail(false);
-        this.validatePassword(false);
-        this.setDisplayLoading(false);
-        this.notify({
-          type: 'error', 
-          message: 'Sign in fails. Please check your email and password again'
+      this.setDisplayLoading(true);
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(this.email, this.password)
+        .then(user => {
+          this.setDisplayLoading(false);
+          this.notify({
+            type: "success",
+            message: "Log in successfully! Enjoy our app!"
           });
-      });
+        })
+        .catch(error => {
+          this.validateEmail(false);
+          this.validatePassword(false);
+          this.setDisplayLoading(false);
+          this.notify({
+            type: "error",
+            message: "Sign in fails. Please check your email and password again"
+          });
+        });
     }
   },
   computed: {
     ...mapState({
-      userLogIn: 'userLogIn'
+      userLogIn: "userLogIn"
     }),
     recoverMessage() {
       if (this.resettingPassword && this.recoverEmailSent) {
         return `We have sent you a password recovery email. \n
-        Please check your inbox to change your password`
+        Please check your inbox to change your password`;
       }
       if (this.resettingPassword && !this.recoverEmailSent) {
-        return `Enter your email then we will sent you an email to change your password`
+        return `Enter your email then we will sent you an email to change your password`;
       }
-      return ''
+      return "";
     }
   },
   mounted() {
-    this.setDisplayTips(false)
+    this.setDisplayTips(false);
   }
-}
+};
 </script>
 
 <style lang="sass" scoped>

@@ -4,25 +4,25 @@ transition(name="notification" key="note" appear)
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapMutations } from "vuex";
 export default {
-  name: 'AppNotification',
+  name: "AppNotification",
   methods: {
     ...mapMutations({
-      clearNotification: 'CLEAR_NOTIFICATION'
+      clearNotification: "CLEAR_NOTIFICATION"
     })
   },
   computed: {
     ...mapState({
-      notification: 'notification'
+      notification: "notification"
     }),
     classObj() {
       return {
-        warning: this.notification.type === 'warning',
-        error: this.notification.type === 'error',
-        success: this.notification.type === 'success',
-        primary: this.notification.type === 'primary',
-      }
+        warning: this.notification.type === "warning",
+        error: this.notification.type === "error",
+        success: this.notification.type === "success",
+        primary: this.notification.type === "primary"
+      };
     },
     displayNotification() {
       return this.notification.display;
@@ -33,11 +33,11 @@ export default {
       if (this.displayNotification) {
         setTimeout(() => {
           this.clearNotification();
-        }, 5000)
+        }, 5000);
       }
     }
   }
-}
+};
 </script>
 
 <style lang="sass" scoped>

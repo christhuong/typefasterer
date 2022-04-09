@@ -2,9 +2,9 @@
   span {{ tweeningValue.toFixed(1) }}{{unit}}
 </template>
 <script>
-import { TweenLite } from 'gsap'
+import { TweenLite } from "gsap";
 export default {
-  name: 'AnimatedNumber',
+  name: "AnimatedNumber",
   props: {
     value: {
       type: Number,
@@ -18,20 +18,20 @@ export default {
   data() {
     return {
       tweeningValue: 0
-    }
+    };
   },
   watch: {
     value(newValue) {
-      this.tween(newValue)
+      this.tween(newValue);
     }
   },
   mounted() {
-    this.tween(this.value)
+    this.tween(this.value);
   },
   methods: {
     tween(newValue) {
-      new TweenLite.to(this.$data, 0.5, {tweeningValue: newValue})
+      new TweenLite.to(this.$data, 0.5, { tweeningValue: newValue });
     }
   }
-}
+};
 </script>

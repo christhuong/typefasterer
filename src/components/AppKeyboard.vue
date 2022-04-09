@@ -1,4 +1,4 @@
-<template lang='pug'>
+<template lang="pug">
 #app-keyboard.screen-children-size.app-keyboard(:class="[grayScale && 'gray']")
   .time-bar.time-bar-outer
     .time-bar-inner(:style='{transform: `scaleX(${app.running ? 1 - time.left/time.allotted : 0})`}')
@@ -7,27 +7,27 @@
       div(:class="`keyboard__${String(rowName)}`" :key="`row${String(rowName)}`")
         template(v-if="displaySymbols")
           AppKeyboardKey(
-            v-for="(key, index) in row.shift" 
-            :index="index" 
-            :lastIndex="row.all.length - 1" 
+            v-for="(key, index) in row.shift"
+            :index="index"
+            :lastIndex="row.all.length - 1"
             :key="`key${key}${index}`"
             :class="keyStateClass(key, row.all[index])"
             ) {{key === ' ' ? activeFinger : key}}
         template(v-else)
           AppKeyboardKey(
-            v-for=" (key, index) in row.all" 
-            :index="index" 
-            :lastIndex="row.all.length - 1" 
-            :key="`key${key}${index}`" 
+            v-for=" (key, index) in row.all"
+            :index="index"
+            :lastIndex="row.all.length - 1"
+            :key="`key${key}${index}`"
             :class="keyStateClass(key, row.shift[index])"
             ) {{key === ' ' ? activeFinger : key}}
 </template>
 
 <script>
-import AppKeyboardKey from './AppKeyboardKey.vue'
-import { mapState } from 'vuex';
+import AppKeyboardKey from "./AppKeyboardKey.vue";
+import { mapState } from "vuex";
 export default {
-  name: 'AppKeyboard',
+  name: "AppKeyboard",
   components: {
     AppKeyboardKey
   },
@@ -35,50 +35,166 @@ export default {
     return {
       enKeys: {
         numberRow: {
-          all: ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=' ,'back'],
-          shift: ['~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+', 'back']
+          all: [
+            "`",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "0",
+            "-",
+            "=",
+            "back"
+          ],
+          shift: [
+            "~",
+            "!",
+            "@",
+            "#",
+            "$",
+            "%",
+            "^",
+            "&",
+            "*",
+            "(",
+            ")",
+            "_",
+            "+",
+            "back"
+          ]
         },
         topRow: {
-          all: ['tab', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']' ,'\\'],
-          shift: ['tab','q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p','{', '}', '|']
+          all: [
+            "tab",
+            "q",
+            "w",
+            "e",
+            "r",
+            "t",
+            "y",
+            "u",
+            "i",
+            "o",
+            "p",
+            "[",
+            "]",
+            "\\"
+          ],
+          shift: [
+            "tab",
+            "q",
+            "w",
+            "e",
+            "r",
+            "t",
+            "y",
+            "u",
+            "i",
+            "o",
+            "p",
+            "{",
+            "}",
+            "|"
+          ]
         },
         homeRow: {
-          all: ['caps', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', "'", 'enter'],
-          shift: ['caps','a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l',':',`"`,'enter']
+          all: [
+            "caps",
+            "a",
+            "s",
+            "d",
+            "f",
+            "g",
+            "h",
+            "j",
+            "k",
+            "l",
+            ";",
+            "'",
+            "enter"
+          ],
+          shift: [
+            "caps",
+            "a",
+            "s",
+            "d",
+            "f",
+            "g",
+            "h",
+            "j",
+            "k",
+            "l",
+            ":",
+            `"`,
+            "enter"
+          ]
         },
         bottomRow: {
-          all: ['shift', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', 'shift'],
-          shift: ['shift','z', 'x', 'c', 'v', 'b', 'n', 'm','<', '>', '?','shift']
+          all: [
+            "shift",
+            "z",
+            "x",
+            "c",
+            "v",
+            "b",
+            "n",
+            "m",
+            ",",
+            ".",
+            "/",
+            "shift"
+          ],
+          shift: [
+            "shift",
+            "z",
+            "x",
+            "c",
+            "v",
+            "b",
+            "n",
+            "m",
+            "<",
+            ">",
+            "?",
+            "shift"
+          ]
         },
         spaceRow: {
-          all: ['ctrl', 'fn', 'alt', ' ', 'alt', 'me', 'ctrl'],
-          shift: ['ctrl', 'fn', 'alt', ' ', 'alt', 'me', 'ctrl']
+          all: ["ctrl", "fn", "alt", " ", "alt", "me", "ctrl"],
+          shift: ["ctrl", "fn", "alt", " ", "alt", "me", "ctrl"]
         }
       }
-    }
+    };
   },
   methods: {
     keyStateClass(key, alias) {
       return {
-        'active': this.activeKeys.includes(key.toLowerCase()) || this.activeKeys.includes(alias.toLowerCase()),
-        'pressed': this.pressedKeys.includes(key.toLowerCase()),
-        'shift-active': this.shiftKeyActive && key === 'shift'
-      }
+        active:
+          this.activeKeys.includes(key.toLowerCase()) ||
+          this.activeKeys.includes(alias.toLowerCase()),
+        pressed: this.pressedKeys.includes(key.toLowerCase()),
+        "shift-active": this.shiftKeyActive && key === "shift"
+      };
     }
   },
   computed: {
     ...mapState({
-      app: 'app',
-      time: 'time',
-      grayScale: 'grayScale',
-      activeKeys: 'activeKeys',
-      pressedKeys: 'pressedKeys',
-      shiftKeyActive: 'shiftKeyActive',
-      displaySymbols: 'displaySymbols',
-      activeFinger: 'activeFinger'
+      app: "app",
+      time: "time",
+      grayScale: "grayScale",
+      activeKeys: "activeKeys",
+      pressedKeys: "pressedKeys",
+      shiftKeyActive: "shiftKeyActive",
+      displaySymbols: "displaySymbols",
+      activeFinger: "activeFinger"
     })
   }
-}
+};
 </script>
 
 <style lang="sass">

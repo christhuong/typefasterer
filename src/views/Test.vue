@@ -11,17 +11,17 @@
 </template>
 
 <script>
-import AppTextDisplay from '@/components/AppTextDisplay.vue'
-import ControlPanel from '@/components/ControlPanel.vue'
-import AppControlButtons from '@/components/AppControlButtons.vue'
-import ResultDisplay from '@/components/ResultDisplay.vue'
-import TypingMode from '@/components/TypingMode'
-import AnimatedTypingText from '@/components/AnimatedTypingText.vue'
-import TypingModeControl from '@/components/TypingModeControl.vue'
-import { mapState, mapMutations, mapGetters } from 'vuex'
+import AppTextDisplay from "@/components/AppTextDisplay.vue";
+import ControlPanel from "@/components/ControlPanel.vue";
+import AppControlButtons from "@/components/AppControlButtons.vue";
+import ResultDisplay from "@/components/ResultDisplay.vue";
+import TypingMode from "@/components/TypingMode";
+import AnimatedTypingText from "@/components/AnimatedTypingText.vue";
+import TypingModeControl from "@/components/TypingModeControl.vue";
+import { mapState, mapMutations, mapGetters } from "vuex";
 
 export default {
-  name: 'test',
+  name: "test",
   components: {
     AnimatedTypingText,
     AppTextDisplay,
@@ -29,35 +29,37 @@ export default {
     AppControlButtons,
     ResultDisplay,
     TypingMode,
-    TypingModeControl,
+    TypingModeControl
   },
   methods: {
     ...mapMutations({
-      changeAppMode: 'CHANGE_APP_MODE'
+      changeAppMode: "CHANGE_APP_MODE"
     })
   },
   computed: {
     ...mapState({
-      app: 'app',
-      displayResult: 'displayResult',
-      displayOptions: 'displayOptions',
+      app: "app",
+      displayResult: "displayResult",
+      displayOptions: "displayOptions"
     }),
     ...mapGetters({
-      isMobile: 'isMobile'
+      isMobile: "isMobile"
     }),
     displayTypingMode() {
       return !this.displayResult && this.displayOptions;
     },
     cheer() {
-      if (!this.app.running && !this.app.beforeRestart) return `How fast can you type?`;
-      if (!this.app.running && this.app.beforeRestart) return `You can type even faster than this!`;
-      return 'Try not to look at your keyboard while typing'
+      if (!this.app.running && !this.app.beforeRestart)
+        return `How fast can you type?`;
+      if (!this.app.running && this.app.beforeRestart)
+        return `You can type even faster than this!`;
+      return "Try not to look at your keyboard while typing";
     }
   },
   created() {
-    this.changeAppMode('test');
+    this.changeAppMode("test");
   }
-}
+};
 </script>
 
 <style lang="sass">

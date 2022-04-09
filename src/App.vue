@@ -1,68 +1,88 @@
 <template>
-  <div id="app" v-bind:class="{'light': app.theme === 'light', 'mobile': isMobile}">
+  <div
+    id="app"
+    v-bind:class="{ light: app.theme === 'light', mobile: isMobile }"
+  >
     <div id="nav">
-      <router-link id='logo' to="/about">fasterer</router-link>
+      <router-link id="logo" to="/about">fasterer</router-link>
       <router-link to="/test">Test</router-link>
       <router-link to="/">Practice</router-link>
       <router-link to="/stats">Stats</router-link>
-      <div id='menu-ham' @click.stop="setDisplayBurger(true)">
+      <div id="menu-ham" @click.stop="setDisplayBurger(true)">
         <div class="bar"></div>
         <div class="bar"></div>
       </div>
-      <app-burger/>
+      <app-burger />
     </div>
-    <router-view/>
-    <app-notification/>
-    <app-loading/>
+    <router-view />
+    <app-notification />
+    <app-loading />
     <app-tips class="app-tip-main" v-if="showTips">
-      Do you have an account yet? <br> 
-      <a @click="setDisplayTips(false)" href="/signup" class="bold blue underline">Sign up</a> or <a @click="setDisplayTips(false)" href="/login" class="bold blue underline">Log in</a> now to save your typing data and get access to it everywhere!
+      Do you have an account yet? <br />
+      <a
+        @click="setDisplayTips(false)"
+        href="/signup"
+        class="bold blue underline"
+        >Sign up</a
+      >
+      or
+      <a
+        @click="setDisplayTips(false)"
+        href="/login"
+        class="bold blue underline"
+        >Log in</a
+      >
+      now to save your typing data and get access to it everywhere!
     </app-tips>
   </div>
 </template>
 <script>
-import {mapState, mapMutations, mapActions, mapGetters} from 'vuex'
-import AppBurger from './components/AppBurger.vue'
-import AppNotification from './components/AppNotification.vue'
-import AppLoading from './components/AppLoading.vue'
-import AppTips from './components/AppTips.vue'
+import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
+import AppBurger from "./components/AppBurger.vue";
+import AppNotification from "./components/AppNotification.vue";
+import AppLoading from "./components/AppLoading.vue";
+import AppTips from "./components/AppTips.vue";
 export default {
   components: {
     AppBurger,
     AppNotification,
     AppLoading,
-    AppTips,
+    AppTips
   },
   methods: {
     ...mapMutations({
-      updateAppTheme: 'UPDATE_APP_THEME',
-      setDisplayBurger: 'SET_DISPLAY_BURGER',
-      setDisplayTips: 'SET_DISPLAY_TIPS',
+      updateAppTheme: "UPDATE_APP_THEME",
+      setDisplayBurger: "SET_DISPLAY_BURGER",
+      setDisplayTips: "SET_DISPLAY_TIPS"
     }),
     ...mapActions({
-      userObserver: 'userObserver'
-    }),
-    
+      userObserver: "userObserver"
+    })
   },
   computed: {
     ...mapState({
-      app: 'app',
-      userLogIn: 'userLogIn',
-      displayTips: 'displayTips',
+      app: "app",
+      userLogIn: "userLogIn",
+      displayTips: "displayTips"
     }),
     ...mapGetters({
-      isMobile: 'isMobile'
+      isMobile: "isMobile"
     }),
     showTips() {
-      return (!this.userLogIn && this.displayTips);
-    },
+      return !this.userLogIn && this.displayTips;
+    }
   },
   created() {
     this.updateAppTheme();
-    document.getElementById('theme-color').setAttribute('content', this.app.theme === 'light' ? '#eaeaea' : '#000000')
+    document
+      .getElementById("theme-color")
+      .setAttribute(
+        "content",
+        this.app.theme === "light" ? "#eaeaea" : "#000000"
+      );
     this.userObserver();
-  },
-}
+  }
+};
 </script>
 
 <style lang="sass">
@@ -82,7 +102,7 @@ export default {
   top: 30%
   left: 55%
   z-index: 99
-  
+
 #logo
   position: absolute
   left: 7.14vw

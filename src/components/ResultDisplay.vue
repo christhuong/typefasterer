@@ -9,8 +9,8 @@
     .error-col Error
   .results-wrapper
     .result-row(
-      v-for="(el, i) in results" 
-      :class="currentRowClass(i)" 
+      v-for="(el, i) in results"
+      :class="currentRowClass(i)"
       :key="`${el}_${i}`"
       )
       .result-date {{date[i]}}
@@ -19,49 +19,65 @@
       .result-error.red {{error[i]}}%
 </template>
 <script>
-import ResultConfetti from './ResultConfetti.vue'
-import { mapState, mapMutations, mapActions } from 'vuex';
+import ResultConfetti from "./ResultConfetti.vue";
+import { mapState, mapMutations, mapActions } from "vuex";
 export default {
-  name: 'ResultDisplay',
+  name: "ResultDisplay",
   components: {
-    ResultConfetti,
+    ResultConfetti
   },
   methods: {
     ...mapMutations({
-      setDisplayResult: 'SET_DISPLAY_RESULT',
-      notify: 'NOTIFY',
+      setDisplayResult: "SET_DISPLAY_RESULT",
+      notify: "NOTIFY"
     }),
     ...mapActions({
-      updateStatsData: 'updateStatsData',
+      updateStatsData: "updateStatsData"
     }),
     currentRowClass(i) {
-      if (i === 0) return {
-        'current': true,
-        'green-border': this.congrats || this.results.length === 1,
-        'red-border': !this.congrats && this.results.length !== 1,
-      }
-    },
+      if (i === 0)
+        return {
+          current: true,
+          "green-border": this.congrats || this.results.length === 1,
+          "red-border": !this.congrats && this.results.length !== 1
+        };
+    }
   },
   computed: {
     ...mapState({
-      statsResults: 'statsResults'
+      statsResults: "statsResults"
     }),
     results() {
       if (this.statsResults.length <= 0) return [];
       return this.statsResults.sort((b, a) => new Date(a[0]) - new Date(b[0]));
     },
     date() {
-      return this.statsResults ? this.statsResults.map(el =>
-        new Date(el[0]).toDateString().slice(4).slice(0, -4)) : []
+      return this.statsResults
+        ? this.statsResults.map(el =>
+            new Date(el[0])
+              .toDateString()
+              .slice(4)
+              .slice(0, -4)
+          )
+        : [];
     },
     time() {
-      return this.statsResults ? this.statsResults.map(el => `${Math.round(el[1]/60*100)/100} ${el[1]/60 === 1 ? 'min' : 'mins'}`) : []
+      return this.statsResults
+        ? this.statsResults.map(
+            el =>
+              `${Math.round((el[1] / 60) * 100) / 100} ${
+                el[1] / 60 === 1 ? "min" : "mins"
+              }`
+          )
+        : [];
     },
     speed() {
-      return this.statsResults ? this.statsResults.map(el => el[2]) : []
+      return this.statsResults ? this.statsResults.map(el => el[2]) : [];
     },
     error() {
-      return this.statsResults ? this.statsResults.map(el => Math.round(el[3])) : []
+      return this.statsResults
+        ? this.statsResults.map(el => Math.round(el[3]))
+        : [];
     },
     congrats() {
       return this.speed[0] >= this.speed[1] && this.error[0] <= this.error[1];
@@ -73,18 +89,29 @@ export default {
   watch: {
     resultLength() {
       if (this.congrats) {
-        this.notify({type: 'success', message: 'Congrats! You made an improvement!'})
+        this.notify({
+          type: "success",
+          message: "Congrats! You made an improvement!"
+        });
       } else if (!this.congrats && this.results.length !== 1) {
-        this.notify({type: 'error', message: 'You did type faster and made less error than this! Try harder!'})
-        } else {
-        this.notify({type: 'success', message: 'Congrats! You did your first exercise! You can type even faster with more practice!'})
+        this.notify({
+          type: "error",
+          message:
+            "You did type faster and made less error than this! Try harder!"
+        });
+      } else {
+        this.notify({
+          type: "success",
+          message:
+            "Congrats! You did your first exercise! You can type even faster with more practice!"
+        });
       }
     }
   },
   created() {
-    this.updateStatsData()
+    this.updateStatsData();
   }
-}
+};
 </script>
 <style lang="sass">
 .result-display

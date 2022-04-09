@@ -1,7 +1,7 @@
 <template lang="pug">
 #typing-mode-control.typing-mode-control
   .custom-select.arrow.tooltip(
-    @click.stop='handleClick' 
+    @click.stop='handleClick'
     :class="{'gray': app.running && !app.paused}"
     ) {{typingMode.charAt(0).toUpperCase() + typingMode.slice(1).toLowerCase()}}
 
@@ -9,23 +9,23 @@
     transition(name='select-options')
       ul.select-options-panel(v-if="displayOptions")
         li.select-option(
-          v-for="m in modes" 
-          :key="m" 
-          @click.stop="getMode" 
+          v-for="m in modes"
+          :key="m"
+          @click.stop="getMode"
           :class="m.toLowerCase() === typingMode && 'selected'"
           ) {{m}}
         span.exit-icon(@click.stop="setDisplayOptions(false)")
 </template>
 
 <script>
-import {mapState, mapMutations} from 'vuex'
+import { mapState, mapMutations } from "vuex";
 export default {
-  name: 'AppTimer',
+  name: "AppTimer",
   data() {
     return {
       displayText: true,
-      modes: ['Keyboard', 'Hand', 'Words', 'Sentences', 'Custom']
-    }
+      modes: ["Keyboard", "Hand", "Words", "Sentences", "Custom"]
+    };
   },
   methods: {
     handleClick() {
@@ -36,19 +36,19 @@ export default {
       this.displayText = false;
       this.setTypingMode(event.target.textContent.toLowerCase());
     },
-    ...mapMutations({ 
-      setTypingMode: 'SET_TYPING_MODE',
-      setDisplayOptions: 'SET_DISPLAY_OPTIONS'
+    ...mapMutations({
+      setTypingMode: "SET_TYPING_MODE",
+      setDisplayOptions: "SET_DISPLAY_OPTIONS"
     })
   },
   computed: {
     ...mapState({
-      typingMode: 'typingMode',
-      app: 'app',
-      displayOptions: 'displayOptions'
-    }),
+      typingMode: "typingMode",
+      app: "app",
+      displayOptions: "displayOptions"
+    })
   }
-}
+};
 </script>
 
 <style lang="sass">

@@ -7,7 +7,7 @@
       div
         h1.blue You can type very fast
         h2 You can type 60 words or even more in a minute with 10 fingers after about 60 hours training!
-        p 
+        p
           span.about-num.blue 60#[span hours<br>training]
           span.about-num.green-text 60#[span words<br>per&nbsp;minute]
     section.grid-2
@@ -21,35 +21,39 @@
         img(src="../assets/graph.png" alt="line graph")
       div
         h1.blue The more you practice, the faster you type!
-        h2 At the first 10 hours, you may find yourself typing slowly and this may discourage you. <br> However, if you keep practicing, you will make great progress in no time! 
+        h2 At the first 10 hours, you may find yourself typing slowly and this may discourage you. <br> However, if you keep practicing, you will make great progress in no time!
     section.grid-3
       h1.blue We can help you type faster
       h2 Type fasterer app can help you type 60 words per minute by providing diverse practice mode and tracking your typing progress for you.
         span.cat.green-text Visit our #[a(href="https://www.facebook.com/typefasterer/" target="_blank") fanpage] for typing tips!
       .fasterer
         a(href="https://www.facebook.com/typefasterer/" target="_blank")
-          .text fast 
+          .text fast
             span.blinking.guide &nbsp;&nbsp;
   footer
     p Designed and crafted with ❤️ and ☕ by #[a(href="https://www.facebook.com/christhuong98/" target="_blank") Chris Thuong]
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import { mapState } from "vuex";
 export default {
-  name: 'about',
+  name: "about",
   computed: {
     ...mapState({
-      app: 'app'
+      app: "app"
     }),
     src1() {
-      return this.app.theme === 'light' ? require('../assets/mobile_keyboard_light.png') : require('../assets/mobile_keyboard_dark.png')
+      return this.app.theme === "light"
+        ? require("../assets/mobile_keyboard_light.png")
+        : require("../assets/mobile_keyboard_dark.png");
     },
     src2() {
-      return this.app.theme === 'light' ? require('../assets/kb_light.png') : require('../assets/kb_dark.png')
-    },
-  },
-}
+      return this.app.theme === "light"
+        ? require("../assets/kb_light.png")
+        : require("../assets/kb_dark.png");
+    }
+  }
+};
 </script>
 
 <style lang="sass">

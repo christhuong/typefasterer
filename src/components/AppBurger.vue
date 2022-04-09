@@ -29,54 +29,56 @@
         span.label app theme
         ul
           li(
-            :class="{'selected': app.theme !== 'light'}" 
+            :class="{'selected': app.theme !== 'light'}"
             @click.stop="setAppTheme('dark')"
             ) Dark
           li(
-            :class="{'selected': app.theme === 'light'}" 
+            :class="{'selected': app.theme === 'light'}"
             @click.stop="setAppTheme('light')"
             ) Light
 </template>
 
 <script>
-import {mapState, mapMutations} from 'vuex'
-import firebase from 'firebase/app';
-import 'firebase/auth'
+import { mapState, mapMutations } from "vuex";
+import firebase from "firebase/app";
+import "firebase/auth";
 export default {
-  name: 'AppBurger',
+  name: "AppBurger",
   data() {
-    return {
-    }
+    return {};
   },
   methods: {
     ...mapMutations({
-      setAppTheme: 'SET_APP_THEME',
-      setDisplayBurger: 'SET_DISPLAY_BURGER',
-      notify: 'NOTIFY',
+      setAppTheme: "SET_APP_THEME",
+      setDisplayBurger: "SET_DISPLAY_BURGER",
+      notify: "NOTIFY"
     }),
-    buttonClicked(path = '/signin') {
+    buttonClicked(path = "/signin") {
       this.$router.push(path);
       this.setDisplayBurger(false);
     },
     logOut() {
-      firebase.auth().signOut().then(() => {
-        this.notify({type: 'success', message: 'You are logged out!'})
-        // this.$router.push('/')
-      })
+      firebase
+        .auth()
+        .signOut()
+        .then(() => {
+          this.notify({ type: "success", message: "You are logged out!" });
+          // this.$router.push('/')
+        });
     }
   },
   computed: {
     ...mapState({
-      app: 'app',
-      displayBurger: 'displayBurger',
-      userLogIn: 'userLogIn',
-      currentUser: 'currentUser'
+      app: "app",
+      displayBurger: "displayBurger",
+      userLogIn: "userLogIn",
+      currentUser: "currentUser"
     })
   },
   mounted() {
-    window.addEventListener('click', () => this.setDisplayBurger(false))
+    window.addEventListener("click", () => this.setDisplayBurger(false));
   }
-}
+};
 </script>
 
 <style lang="sass">

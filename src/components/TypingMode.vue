@@ -4,9 +4,9 @@
     template( v-for="(row, rowName) in textData.keyboard" )
       label.custom-input( :key="rowName" )
         input(
-          type="checkbox" 
-          :id="row" 
-          v-model="chosenMode" 
+          type="checkbox"
+          :id="row"
+          v-model="chosenMode"
           :value="row.join('')"
           )
         span.checkmark
@@ -14,13 +14,13 @@
         span.samples.spacing {{row.join('')}}
   .byHand( v-if="mode === `hand`" )
     .hand(
-      v-for="(hand, handName) in textData.hand" 
+      v-for="(hand, handName) in textData.hand"
       :key="handName"
       )
       label.custom-input
         input(
-          type="checkbox" 
-          :checked="allChosen(hand)" 
+          type="checkbox"
+          :checked="allChosen(hand)"
           @click="toggleAll(hand)"
           )
         span.checkmark
@@ -28,34 +28,34 @@
       template( v-for="(row, rowName) in hand" )
         label.custom-input( :key="`hand${rowName}`" )
           input(
-            type="checkbox" 
-            v-model="chosenMode" 
+            type="checkbox"
+            v-model="chosenMode"
             :value="row.join('')"
             )
           span.checkmark
           span.samples.spacing {{row.join('')}}
   .byWords( v-if="mode === `words`" )
     .words(
-      v-for="(word, wordName) in textData.words" 
+      v-for="(word, wordName) in textData.words"
       :key="wordName"
       )
       label.custom-input
         input(
-          type="checkbox" 
-          v-model="chosenMode" 
+          type="checkbox"
+          v-model="chosenMode"
           :value="word.join(' ')"
           )
         span.checkmark
         span.samples {{`${word.length} common ${wordName}`}}
   .byWords( v-if="mode === `sentences`" )
     .words(
-      v-for="(sentence, sentenceName) in textData.sentences" 
+      v-for="(sentence, sentenceName) in textData.sentences"
       :key="sentenceName"
       )
       label.custom-input
         input(
-          type="radio" 
-          v-model="chosenMode" 
+          type="radio"
+          v-model="chosenMode"
           :value="sentence"
           )
         span.checkmark.radio
@@ -67,69 +67,122 @@
     )
   p.required( v-if="chosenMode.length===0" ) {{mode === 'custom' ? '* Type something in the box' : '* Check at least one box'}}
   button.set-text.orange.orange-border.dotted-border(
-    @click="setChosenText()" 
+    @click="setChosenText()"
     :disabled="chosenMode.length===0"
     ) Set text
 </template>
 
 <script>
-import {mapState, mapMutations} from 'vuex'
+import { mapState, mapMutations } from "vuex";
 
 export default {
-  name: 'TypingMode',
+  name: "TypingMode",
   data() {
     return {
       chosenMode: [],
       textData: {
         keyboard: {
-          symbols: ["~","!","@","#","$","%","^","&","*","(",")","_","+"],
-          number: ["`","1","2","3","4","5","6","7","8","9","0","-","="],
-          top: ["q","w","e","r","t","y","u","i","o","p","[","]","\\"],
-          home: ["a","s","d","f","g","h","j","k","l",";","'"],
-          bottom: ["z","x","c","v","b","n","m",",",".","/"]
+          symbols: [
+            "~",
+            "!",
+            "@",
+            "#",
+            "$",
+            "%",
+            "^",
+            "&",
+            "*",
+            "(",
+            ")",
+            "_",
+            "+"
+          ],
+          number: [
+            "`",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "0",
+            "-",
+            "="
+          ],
+          top: [
+            "q",
+            "w",
+            "e",
+            "r",
+            "t",
+            "y",
+            "u",
+            "i",
+            "o",
+            "p",
+            "[",
+            "]",
+            "\\"
+          ],
+          home: ["a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'"],
+          bottom: ["z", "x", "c", "v", "b", "n", "m", ",", ".", "/"]
         },
         hand: {
           left: {
-            symbols: ["~","!","@","#","$","%"],
-            number: ["`","1","2","3","4","5"],
-            top: ["q","w","e","r","t"],
-            home: ["a","s","d","f","g"],
-            bottom: ["z","x","c","v","b"]
+            symbols: ["~", "!", "@", "#", "$", "%"],
+            number: ["`", "1", "2", "3", "4", "5"],
+            top: ["q", "w", "e", "r", "t"],
+            home: ["a", "s", "d", "f", "g"],
+            bottom: ["z", "x", "c", "v", "b"]
           },
           right: {
-            symbols: ["^","&","*","(",")","_","+"],
-            number: ["6","7","8","9","0","-","="],
-            top: ["y","u","i","o","p","[","]","\\"],
-            home: ["h","j","k","l",";","'"],
-            bottom: ["n","m",",",".","/"]
+            symbols: ["^", "&", "*", "(", ")", "_", "+"],
+            number: ["6", "7", "8", "9", "0", "-", "="],
+            top: ["y", "u", "i", "o", "p", "[", "]", "\\"],
+            home: ["h", "j", "k", "l", ";", "'"],
+            bottom: ["n", "m", ",", ".", "/"]
           }
         },
         words: {
-          nouns: ['noun', 'noun'],
-          adjectives: ['adj', 'adj'],
-          abverbs: ['adv', 'adv'],
-          verbs: ['verbs', 'verbs'],
-          words: ['word', 'word'],
+          nouns: ["noun", "noun"],
+          adjectives: ["adj", "adj"],
+          abverbs: ["adv", "adv"],
+          verbs: ["verbs", "verbs"],
+          words: ["word", "word"]
         },
         sentences: {
-          news: ['sent', 'sent'],
-          "dummy text": ['sent', 'sent'],
+          news: ["sent", "sent"],
+          "dummy text": ["sent", "sent"]
         }
       }
-    }
+    };
   },
   methods: {
     handleClick() {
-      return false
+      return false;
     },
     allChosen(hand) {
-      return Object.values(hand).map(el => el.join('')).every(el => this.chosenMode.includes(el));
+      return Object.values(hand)
+        .map(el => el.join(""))
+        .every(el => this.chosenMode.includes(el));
     },
     toggleAll(hand) {
       if (this.allChosen(hand)) {
-        this.chosenMode = this.chosenMode.filter(el => !Object.values(hand).map(row => row.join("")).includes(el))
+        this.chosenMode = this.chosenMode.filter(
+          el =>
+            !Object.values(hand)
+              .map(row => row.join(""))
+              .includes(el)
+        );
       } else {
-        this.chosenMode.push(...Object.values(hand).map(row => row.join("")).filter(el => !this.chosenMode.includes(el)))
+        this.chosenMode.push(
+          ...Object.values(hand)
+            .map(row => row.join(""))
+            .filter(el => !this.chosenMode.includes(el))
+        );
       }
     },
     setChosenText() {
@@ -137,8 +190,8 @@ export default {
       this.setDisplayOptions(false);
     },
     ...mapMutations({
-      setText: 'SET_TEXT',
-      setDisplayOptions: 'SET_DISPLAY_OPTIONS'
+      setText: "SET_TEXT",
+      setDisplayOptions: "SET_DISPLAY_OPTIONS"
     }),
     setLocalText() {
       for (let item in this.typingText) {
@@ -148,49 +201,69 @@ export default {
   },
   computed: {
     ...mapState({
-      enAllKeys: 'enAllKeys',
-      mode: 'typingMode',
-      textToType: 'textToType',
-      typingText: 'typingText',
-      enAllKeys: 'enAllKeys',
+      enAllKeys: "enAllKeys",
+      mode: "typingMode",
+      textToType: "textToType",
+      typingText: "typingText",
+      enAllKeys: "enAllKeys"
     }),
     textAfterShuffled() {
-      const filterText = arrOfChars => arrOfChars.filter(char => this.enAllKeys.includes(char.toLowerCase()));
-      let text = '';
-      const shuff = arr => arr.reduce((_, cur, index, self) => {
-        const i = self.length - index - 1;
-        const j = Math.floor(Math.random() * i);
-        cur = self[i];
-        self[i] = self[j];
-        self[j] = cur;
-        return self;
-      }, []);
-      if (this.mode === 'custom') {
-        text = this.chosenMode.join(' ').replace(/[\r\s\n]/g, " ").split('');
+      const filterText = arrOfChars =>
+        arrOfChars.filter(char => this.enAllKeys.includes(char.toLowerCase()));
+      let text = "";
+      const shuff = arr =>
+        arr.reduce((_, cur, index, self) => {
+          const i = self.length - index - 1;
+          const j = Math.floor(Math.random() * i);
+          cur = self[i];
+          self[i] = self[j];
+          self[j] = cur;
+          return self;
+        }, []);
+      if (this.mode === "custom") {
+        text = this.chosenMode
+          .join(" ")
+          .replace(/[\r\s\n]/g, " ")
+          .split("");
         text = filterText(text);
-      } else if (this.mode === 'sentences') {
-        text = shuff(this.chosenMode.join('$$').replace(/[\r\s\n]/g, " ").split('$$'))
+      } else if (this.mode === "sentences") {
+        text = shuff(
+          this.chosenMode
+            .join("$$")
+            .replace(/[\r\s\n]/g, " ")
+            .split("$$")
+        );
       } else {
-        text = this.chosenMode.join(' ').split(' ').length === this.chosenMode.length 
-        ? filterText(this.chosenMode.join('').split('')) 
-        : this.chosenMode;
-        let times = this.chosenMode.join(' ').split(' ').length === this.chosenMode.length ? 3 : 1;
-        text = shuff(text.join(' ').replace(/[\r\s\n]/g, " ").split(' '))
-        .map(el => el.repeat(times))
-        .join(' ').split('');
+        text =
+          this.chosenMode.join(" ").split(" ").length === this.chosenMode.length
+            ? filterText(this.chosenMode.join("").split(""))
+            : this.chosenMode;
+        let times =
+          this.chosenMode.join(" ").split(" ").length === this.chosenMode.length
+            ? 3
+            : 1;
+        text = shuff(
+          text
+            .join(" ")
+            .replace(/[\r\s\n]/g, " ")
+            .split(" ")
+        )
+          .map(el => el.repeat(times))
+          .join(" ")
+          .split("");
       }
-    return text.join('').trim();
-    },
+      return text.join("").trim();
+    }
   },
   watch: {
     mode() {
-      this.chosenMode = []
+      this.chosenMode = [];
     }
   },
   mounted() {
-    this.setLocalText()
+    this.setLocalText();
   }
-}
+};
 </script>
 
 <style lang="sass">
@@ -252,14 +325,14 @@ export default {
   top: 0.5rem
   left: 50%
   transform: translate(-50%, 0)
-.byCustom 
+.byCustom
   width: 20rem
   textarea
     font-size: 1rem
     height: 8rem
     width: 25rem
 .set-text
-  border-width: 3px 
+  border-width: 3px
   border-radius: 5px
   display: block
   height: 2.5rem

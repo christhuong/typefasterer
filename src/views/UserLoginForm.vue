@@ -3,12 +3,11 @@ AppUserForm(mode="login")
 </template>
 
 <script>
-import AppUserForm from '../components/AppUserForm.vue'
+import AppUserForm from "../components/AppUserForm.vue";
 export default {
-  name: 'UserSignupForm',
+  name: "UserSignupForm",
   components: {
     AppUserForm
   }
-}
+};
 </script>
-

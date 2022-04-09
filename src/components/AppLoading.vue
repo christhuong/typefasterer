@@ -4,15 +4,15 @@
 </template>
 
 <script>
-import {mapState, mapMutations} from 'vuex'
+import { mapState, mapMutations } from "vuex";
 export default {
-  name: 'AppLoading',
+  name: "AppLoading",
   computed: {
     ...mapState({
-      displayLoading: 'displayLoading'
+      displayLoading: "displayLoading"
     })
   }
-}
+};
 </script>
 
 <style lang="sass" scoped>
@@ -23,7 +23,7 @@ export default {
   position: fixed
   top: 0
   left: 0
-  pointer-events: none 
+  pointer-events: none
   .loading-content
     font-size: 5rem
     position: absolute

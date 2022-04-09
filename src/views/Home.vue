@@ -1,4 +1,4 @@
-<template lang='pug'>
+<template lang="pug">
 #home
   .header
   AppTextDisplay
@@ -12,17 +12,17 @@
 
 <script>
 // @ is an alias to /src
-import AppTextDisplay from '@/components/AppTextDisplay.vue'
-import ControlPanel from '@/components/ControlPanel.vue'
-import AppControlButtons from '@/components/AppControlButtons.vue'
-import TypingModeControl from '@/components/TypingModeControl.vue'
-import AppKeyboard from '@/components/AppKeyboard.vue'
-import ResultDisplay from '@/components/ResultDisplay.vue'
-import TypingMode from '@/components/TypingMode.vue'
-import { mapState, mapMutations, mapGetters } from 'vuex'
+import AppTextDisplay from "@/components/AppTextDisplay.vue";
+import ControlPanel from "@/components/ControlPanel.vue";
+import AppControlButtons from "@/components/AppControlButtons.vue";
+import TypingModeControl from "@/components/TypingModeControl.vue";
+import AppKeyboard from "@/components/AppKeyboard.vue";
+import ResultDisplay from "@/components/ResultDisplay.vue";
+import TypingMode from "@/components/TypingMode.vue";
+import { mapState, mapMutations, mapGetters } from "vuex";
 
 export default {
-  name: 'home',
+  name: "home",
   components: {
     ControlPanel,
     AppTextDisplay,
@@ -30,29 +30,29 @@ export default {
     AppControlButtons,
     TypingModeControl,
     TypingMode,
-    ResultDisplay,
+    ResultDisplay
   },
   methods: {
     ...mapMutations({
-      changeAppMode: 'CHANGE_APP_MODE'
+      changeAppMode: "CHANGE_APP_MODE"
     })
   },
   computed: {
     ...mapState({
-      displayResult: 'displayResult',
-      displayOptions: 'displayOptions',
+      displayResult: "displayResult",
+      displayOptions: "displayOptions"
     }),
     ...mapGetters({
-      isMobile: 'isMobile',
+      isMobile: "isMobile"
     }),
     displayTypingMode() {
       return !this.displayResult && this.displayOptions;
-    },
+    }
   },
   mounted() {
-    this.changeAppMode('practice');
+    this.changeAppMode("practice");
   }
-}
+};
 </script>
 
 <style lang="sass">

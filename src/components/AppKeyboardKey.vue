@@ -5,41 +5,41 @@
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import { mapState } from "vuex";
 export default {
-  name: 'AppKeyboardKey',
+  name: "AppKeyboardKey",
   props: {
     index: Number,
     lastIndex: Number
-  }, 
+  },
   computed: {
     classObject() {
       if (this.lastIndex === 6) {
         return {
-        'fin-thumb': this.index === 3,
-        'active-finger': this.index === 3,
-        'fin-baby': this.index !==3,
-        'align-left': this.index === 0,
-        'align-right': this.index === this.lastIndex
-        }
+          "fin-thumb": this.index === 3,
+          "active-finger": this.index === 3,
+          "fin-baby": this.index !== 3,
+          "align-left": this.index === 0,
+          "align-right": this.index === this.lastIndex
+        };
       } else {
         return {
-        'fin-baby': this.index < 2 || this.index > 9,
-        'fin-ring': this.index === 2 || this.index === 9,
-        'fin-middle': this.index === 3 || this.index === 8,
-        'fin-index-left': this.index === 4 || this.index === 5,
-        'fin-index-right': this.index === 6 || this.index === 7,
-        'align-left': this.index === 0,
-        'align-right': this.index === this.lastIndex,
-        'uppercase': this.index > 0 && this.index < 11 && this.uppercase
-        }
+          "fin-baby": this.index < 2 || this.index > 9,
+          "fin-ring": this.index === 2 || this.index === 9,
+          "fin-middle": this.index === 3 || this.index === 8,
+          "fin-index-left": this.index === 4 || this.index === 5,
+          "fin-index-right": this.index === 6 || this.index === 7,
+          "align-left": this.index === 0,
+          "align-right": this.index === this.lastIndex,
+          uppercase: this.index > 0 && this.index < 11 && this.uppercase
+        };
       }
     },
     ...mapState({
-      uppercase: 'uppercaseOn'
+      uppercase: "uppercaseOn"
     })
   }
-}
+};
 </script>
 
 <style lang="sass">
@@ -59,7 +59,7 @@ export default {
     color: inherit
     position: relative
     display: block
-    margin: auto    
+    margin: auto
     z-index: 1
   &.fin-baby
     border-color: $green
@@ -84,7 +84,7 @@ export default {
   &.fin-index-right
     border-color: $blue
     box-shadow: 0px 0px 10px rgba($blue, 0.3)
-    &.active 
+    &.active
       color: $blue
   &.fin-thumb
     border-color: $yellow
@@ -93,7 +93,7 @@ export default {
       color: $yellow
 .app-keyboard-key.active, .app-keyboard-key.shift-active
   background-color: currentColor
-  span 
+  span
     color: $black
 .pressed
   transition: all 100ms ease
