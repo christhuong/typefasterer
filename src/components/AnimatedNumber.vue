@@ -1,8 +1,10 @@
 <template lang="pug">
   span {{ tweeningValue.toFixed(1) }}{{unit}}
 </template>
+
 <script>
 import { TweenLite } from "gsap";
+
 export default {
   name: "AnimatedNumber",
   props: {

@@ -53,6 +53,7 @@
 
 <script>
 import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
+
 export default {
   name: "AppControlButtons",
   data() {

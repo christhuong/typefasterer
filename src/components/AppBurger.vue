@@ -9,10 +9,10 @@
         span.label you are not logged in
         .user-btns
           button.user-btn.gray-border.solid-border.signup-btn(
-            @click="buttonClicked('/signup')"
+            @click="navigateTo('/signup')"
             ) Sign up
           button.user-btn.login-btn.green-border.green-text.solid-border(
-            @click="buttonClicked('/login')"
+            @click="navigateTo('/login')"
             class="selected"
             ) Log in
 
@@ -42,6 +42,7 @@
 import { mapState, mapMutations } from "vuex";
 import firebase from "firebase/app";
 import "firebase/auth";
+
 export default {
   name: "AppBurger",
   data() {
@@ -53,7 +54,7 @@ export default {
       setDisplayBurger: "SET_DISPLAY_BURGER",
       notify: "NOTIFY"
     }),
-    buttonClicked(path = "/signin") {
+    navigateTo(path = "/signin") {
       this.$router.push(path);
       this.setDisplayBurger(false);
     },

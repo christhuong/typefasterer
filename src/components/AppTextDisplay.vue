@@ -1,7 +1,5 @@
 <template lang="pug">
 #app-text-display.app-text-display(:class="{'test-mode': app.mode === 'test', 'screen-children-size': app.mode === 'test'}" )
-  .time-progress-bar(v-if="app.mode !=='practice'")
-    .time-bar-inner(:style='{transform: `scaleX(${app.running ? 1 - time.left/time.allotted : 0})`}')
   h1(v-if="!app.running && app.mode === 'practice'")
     span.thin {{animatedText0}}
     span.bold.blue {{animatedText1}}
@@ -84,7 +82,9 @@ export default {
         let mistake = this.errorArr.includes(i) ? "wrong-char" : "";
         let space = el === " " && (!!guide || !!mistake) ? "space" : "";
         return !!guide || !!mistake
-          ? `<span class="${space} ${mistake} ${guide}" >${el}</span>`
+          ? `<span class="${space} ${mistake} ${guide}" >${
+              el === " " ? "&nbsp" : el
+            }</span>`
           : el;
       });
       if (this.index > 0) {
@@ -141,6 +141,7 @@ export default {
 
   .guide
     position: relative
+    display: inline-block
     &:before
       content: ''
       display: block

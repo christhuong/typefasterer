@@ -3,173 +3,38 @@
   .time-bar.time-bar-outer
     .time-bar-inner(:style='{transform: `scaleX(${app.running ? 1 - time.left/time.allotted : 0})`}')
   .keyboard__rows
-    template(v-for="(row, rowName) in enKeys")
-      div(:class="`keyboard__${String(rowName)}`" :key="`row${String(rowName)}`")
+    template(v-for="(row, rowName) in keys")
+      div(:class="`keyboard__${rowName}`" :key="`row${rowName}`")
         template(v-if="displaySymbols")
           AppKeyboardKey(
-            v-for="(key, index) in row.shift"
+            v-for="(key, index) in row.SHIFTED"
             :index="index"
-            :lastIndex="row.all.length - 1"
+            :lastIndex="row.SHIFTED.length - 1"
             :key="`key${key}${index}`"
-            :class="keyStateClass(key, row.all[index])"
+            :class="keyStateClass(key, row.UNSHIFTED[index])"
             ) {{key === ' ' ? activeFinger : key}}
         template(v-else)
           AppKeyboardKey(
-            v-for=" (key, index) in row.all"
+            v-for=" (key, index) in row.UNSHIFTED"
             :index="index"
-            :lastIndex="row.all.length - 1"
+            :lastIndex="row.UNSHIFTED.length - 1"
             :key="`key${key}${index}`"
-            :class="keyStateClass(key, row.shift[index])"
+            :class="keyStateClass(key, row.SHIFTED[index])"
             ) {{key === ' ' ? activeFinger : key}}
 </template>
 
 <script>
-import AppKeyboardKey from "./AppKeyboardKey.vue";
 import { mapState } from "vuex";
+import AppKeyboardKey from "./AppKeyboardKey.vue";
+import { EN_KEYBOARD_KEYS } from "../data/keyboard";
+
 export default {
   name: "AppKeyboard",
   components: {
     AppKeyboardKey
   },
   data() {
-    return {
-      enKeys: {
-        numberRow: {
-          all: [
-            "`",
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "0",
-            "-",
-            "=",
-            "back"
-          ],
-          shift: [
-            "~",
-            "!",
-            "@",
-            "#",
-            "$",
-            "%",
-            "^",
-            "&",
-            "*",
-            "(",
-            ")",
-            "_",
-            "+",
-            "back"
-          ]
-        },
-        topRow: {
-          all: [
-            "tab",
-            "q",
-            "w",
-            "e",
-            "r",
-            "t",
-            "y",
-            "u",
-            "i",
-            "o",
-            "p",
-            "[",
-            "]",
-            "\\"
-          ],
-          shift: [
-            "tab",
-            "q",
-            "w",
-            "e",
-            "r",
-            "t",
-            "y",
-            "u",
-            "i",
-            "o",
-            "p",
-            "{",
-            "}",
-            "|"
-          ]
-        },
-        homeRow: {
-          all: [
-            "caps",
-            "a",
-            "s",
-            "d",
-            "f",
-            "g",
-            "h",
-            "j",
-            "k",
-            "l",
-            ";",
-            "'",
-            "enter"
-          ],
-          shift: [
-            "caps",
-            "a",
-            "s",
-            "d",
-            "f",
-            "g",
-            "h",
-            "j",
-            "k",
-            "l",
-            ":",
-            `"`,
-            "enter"
-          ]
-        },
-        bottomRow: {
-          all: [
-            "shift",
-            "z",
-            "x",
-            "c",
-            "v",
-            "b",
-            "n",
-            "m",
-            ",",
-            ".",
-            "/",
-            "shift"
-          ],
-          shift: [
-            "shift",
-            "z",
-            "x",
-            "c",
-            "v",
-            "b",
-            "n",
-            "m",
-            "<",
-            ">",
-            "?",
-            "shift"
-          ]
-        },
-        spaceRow: {
-          all: ["ctrl", "fn", "alt", " ", "alt", "me", "ctrl"],
-          shift: ["ctrl", "fn", "alt", " ", "alt", "me", "ctrl"]
-        }
-      }
-    };
+    return { keys: EN_KEYBOARD_KEYS };
   },
   methods: {
     keyStateClass(key, alias) {
@@ -178,7 +43,7 @@ export default {
           this.activeKeys.includes(key.toLowerCase()) ||
           this.activeKeys.includes(alias.toLowerCase()),
         pressed: this.pressedKeys.includes(key.toLowerCase()),
-        "shift-active": this.shiftKeyActive && key === "shift"
+        "shift-active": this.shiftKeyActive && key.toLowerCase() === "shift"
       };
     }
   },
@@ -224,14 +89,14 @@ export default {
     display: grid
     grid-template-rows: 1fr
     grid-gap: 1.1%
-.keyboard__numberRow
+.keyboard__NUMBER_ROW
   grid-template-columns: repeat(13, 1fr) 2fr
-.keyboard__topRow
+.keyboard__TOP_ROW
   grid-template-columns: 1.8fr repeat(12, 1fr) 1.2fr
-.keyboard__homeRow
+.keyboard__HOME_ROW
   grid-template-columns: 2.2fr repeat(11, 1fr) 1.8fr
-.keyboard__bottomRow
+.keyboard__BOTTOM_ROW
   grid-template-columns: 2.5fr repeat(10, 1fr) 2.5fr
-.keyboard__spaceRow
+.keyboard__SPACE_ROW
   grid-template-columns: 1.5fr 1fr 1.5fr 7fr 1.5fr 1fr 1.5fr
 </style>

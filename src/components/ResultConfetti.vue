@@ -104,7 +104,6 @@ export default {
     }
   },
   mounted() {
-    // console.log(this.confettiBits);
     this.init();
     this.raf = window.requestAnimationFrame(this.animate);
   }

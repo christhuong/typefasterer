@@ -3,7 +3,8 @@ import Vuex from "vuex";
 import db from "./configs/firebaseInit";
 import { auth } from "firebase/app";
 
-import { DEFAULT_TEXT, SHIFTED_KEYS, EN_ALL_KEYBOARD_KEYS } from "./data/texts";
+import { DEFAULT_TEXT } from "./data/texts";
+import { EN_ALL_KEYBOARD_KEYS, EN_SHIFTED_KEYS } from "./data/keyboard";
 
 Vue.use(Vuex);
 
@@ -146,11 +147,9 @@ export default new Vuex.Store({
     },
     ADD_ACTIVE_KEYS(state, key = state.textToType[state.currentChar]) {
       state.activeKeys.push(key);
-      state.shiftKeyActive = SHIFTED_KEYS.includes(
+      state.shiftKeyActive = EN_SHIFTED_KEYS.includes(
         state.textToType[state.currentChar]
       );
-      if (state.shiftKeyActive && state.activeKeys.includes("shift"))
-        state.activeKeys.push("shift");
     },
 
     //CLEAR
@@ -175,7 +174,7 @@ export default new Vuex.Store({
     SET_TIME_LEFT(state, time) {
       state.time.left = time;
     },
-    SET_TYPING_MODE(state, mode = "keyboard") {
+    SET_TYPING_MODE(state, mode = TYPING_MODE.KEYBOARD) {
       state.typingMode = mode;
     },
     SET_DISPLAY_BURGER(state, displaying = false) {
@@ -253,7 +252,7 @@ export default new Vuex.Store({
           ? false
           : true;
       state.displaySymbols = payload;
-      state.shiftKeyActive = SHIFTED_KEYS.includes(
+      state.shiftKeyActive = EN_SHIFTED_KEYS.includes(
         state.textToType[state.currentChar]
       );
       if (state.shiftKeyActive && state.activeKeys.includes("shift"))
@@ -282,7 +281,7 @@ export default new Vuex.Store({
         state.activeKeys.push(
           state.textToType[state.currentChar].toLowerCase()
         );
-      state.shiftKeyActive = SHIFTED_KEYS.includes(
+      state.shiftKeyActive = EN_SHIFTED_KEYS.includes(
         state.textToType[state.currentChar]
       );
       if (state.shiftKeyActive && state.activeKeys.includes("shift"))
