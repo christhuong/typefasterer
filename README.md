@@ -43,12 +43,3 @@ $ npm run serve
 | **As a user** 👨🏻‍⚕️ using TypeFasterer to practice typing with 10 fingers, <br/> **I want to** be able to have `dark and light` themes 🌓<br/> **so that** I can practice comfortabily day and night🌖                              | ![](/screenshots/theme_change.gif#center)     |
 | **As a user** 👨🏽‍🎓 using TypeFasterer to practice typing with 10 fingers, <br/> **I want to** be able to `view the app information` ℹ️<br/> **so that** I can see how the app can help me and how to get the author's support      | ![](/screenshots/app_details.gif#center)      |
 
-<style>
-img[src*='#center'] {
-    display: block;
-    max-height: 300px;
-    min-width: 600px;
-    width: auto;
-    margin: auto;
-}
-</style>
