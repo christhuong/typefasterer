@@ -155,3 +155,29 @@ export const EN_SHIFTED_KEYS = []
     EN_KEYBOARD_KEYS.BOTTOM_ROW.SHIFTED
   )
   .filter((value, index, self) => self.indexOf(value) === index);
+
+export const TYPING_MODE_KEY_MAP = {
+  KEYBOARD: {
+    SYMBOLS: ["~", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "+"],
+    NUMBER: ["`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "="],
+    TOP: ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", "\\"],
+    HOME: ["a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'"],
+    BOTTOM: ["z", "x", "c", "v", "b", "n", "m", ",", ".", "/"]
+  },
+  HAND: {
+    LEFT: {
+      SYMBOLS: ["~", "!", "@", "#", "$", "%"],
+      NUMBER: ["`", "1", "2", "3", "4", "5"],
+      TOP: ["q", "w", "e", "r", "t"],
+      HOME: ["a", "s", "d", "f", "g"],
+      BOTTOM: ["z", "x", "c", "v", "b"]
+    },
+    RIGHT: {
+      SYMBOLS: ["^", "&", "*", "(", ")", "_", "+"],
+      NUMBER: ["6", "7", "8", "9", "0", "-", "="],
+      TOP: ["y", "u", "i", "o", "p", "[", "]", "\\"],
+      HOME: ["h", "j", "k", "l", ";", "'"],
+      BOTTOM: ["n", "m", ",", ".", "/"]
+    }
+  }
+};

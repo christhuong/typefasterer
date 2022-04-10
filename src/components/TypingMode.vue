@@ -1,7 +1,7 @@
 <template lang="pug">
 #typing-mode.typing-mode.screen-children-size( @click.stop="handleClick" )
   .byKeyboard( v-if="mode === `keyboard`" )
-    template( v-for="(row, rowName) in textData.keyboard" )
+    template( v-for="(row, rowName) in textData.KEYBOARD" )
       label.custom-input( :key="rowName" )
         input(
           type="checkbox"
@@ -10,11 +10,11 @@
           :value="row.join('')"
           )
         span.checkmark
-        span.samples {{rowName.charAt(0).toUpperCase() + rowName.slice(1)}}
+        span.samples {{capitalize(rowName + ' row')}}
         span.samples.spacing {{row.join('')}}
   .byHand( v-if="mode === `hand`" )
     .hand(
-      v-for="(hand, handName) in textData.hand"
+      v-for="(hand, handName) in textData.HAND"
       :key="handName"
       )
       label.custom-input
@@ -24,7 +24,7 @@
           @click="toggleAll(hand)"
           )
         span.checkmark
-        span.samples {{handName.charAt(0).toUpperCase() + handName.slice(1) + ' hand'}}
+        span.samples {{capitalize(handName + ' hand')}}
       template( v-for="(row, rowName) in hand" )
         label.custom-input( :key="`hand${rowName}`" )
           input(
@@ -34,39 +34,14 @@
             )
           span.checkmark
           span.samples.spacing {{row.join('')}}
-  .byWords( v-if="mode === `words`" )
-    .words(
-      v-for="(word, wordName) in textData.words"
-      :key="wordName"
-      )
-      label.custom-input
-        input(
-          type="checkbox"
-          v-model="chosenMode"
-          :value="word.join(' ')"
-          )
-        span.checkmark
-        span.samples {{`${word.length} common ${wordName}`}}
-  .byWords( v-if="mode === `sentences`" )
-    .words(
-      v-for="(sentence, sentenceName) in textData.sentences"
-      :key="sentenceName"
-      )
-      label.custom-input
-        input(
-          type="radio"
-          v-model="chosenMode"
-          :value="sentence"
-          )
-        span.checkmark.radio
-        span.samples {{sentenceName.charAt(0).toUpperCase() + sentenceName.slice(1)}}
   .byCustom( v-if="mode === 'custom'" )
     textarea(
       placeholder="Enter your own text to practice"
       v-model="chosenMode[0]"
     )
-  p.required( v-if="chosenMode.length===0" ) {{mode === 'custom' ? '* Type something in the box' : '* Check at least one box'}}
-  button.set-text.orange.orange-border.dotted-border(
+  p.required( v-if="chosenMode.length===0" ) {{ requiredError }}
+  button.set-text.blue.blue-border.solid-border(
+    :class="{'disabled': chosenMode.length===0}"
     @click="setChosenText()"
     :disabled="chosenMode.length===0"
     ) Set text
@@ -74,93 +49,20 @@
 
 <script>
 import { mapState, mapMutations } from "vuex";
+import { TYPING_MODE_KEY_MAP } from "../data/keyboard";
 
 export default {
   name: "TypingMode",
   data() {
     return {
       chosenMode: [],
-      textData: {
-        keyboard: {
-          symbols: [
-            "~",
-            "!",
-            "@",
-            "#",
-            "$",
-            "%",
-            "^",
-            "&",
-            "*",
-            "(",
-            ")",
-            "_",
-            "+"
-          ],
-          number: [
-            "`",
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "0",
-            "-",
-            "="
-          ],
-          top: [
-            "q",
-            "w",
-            "e",
-            "r",
-            "t",
-            "y",
-            "u",
-            "i",
-            "o",
-            "p",
-            "[",
-            "]",
-            "\\"
-          ],
-          home: ["a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'"],
-          bottom: ["z", "x", "c", "v", "b", "n", "m", ",", ".", "/"]
-        },
-        hand: {
-          left: {
-            symbols: ["~", "!", "@", "#", "$", "%"],
-            number: ["`", "1", "2", "3", "4", "5"],
-            top: ["q", "w", "e", "r", "t"],
-            home: ["a", "s", "d", "f", "g"],
-            bottom: ["z", "x", "c", "v", "b"]
-          },
-          right: {
-            symbols: ["^", "&", "*", "(", ")", "_", "+"],
-            number: ["6", "7", "8", "9", "0", "-", "="],
-            top: ["y", "u", "i", "o", "p", "[", "]", "\\"],
-            home: ["h", "j", "k", "l", ";", "'"],
-            bottom: ["n", "m", ",", ".", "/"]
-          }
-        },
-        words: {
-          nouns: ["noun", "noun"],
-          adjectives: ["adj", "adj"],
-          abverbs: ["adv", "adv"],
-          verbs: ["verbs", "verbs"],
-          words: ["word", "word"]
-        },
-        sentences: {
-          news: ["sent", "sent"],
-          "dummy text": ["sent", "sent"]
-        }
-      }
+      textData: TYPING_MODE_KEY_MAP
     };
   },
   methods: {
+    capitalize(str) {
+      return str.charAt(0).toUpperCase() + str.toLowerCase().slice(1);
+    },
     handleClick() {
       return false;
     },
@@ -207,6 +109,11 @@ export default {
       typingText: "typingText",
       enAllKeys: "enAllKeys"
     }),
+    requiredError() {
+      return this.mode === "custom"
+        ? "* Type something in the box"
+        : "* Check at least one box";
+    },
     textAfterShuffled() {
       const filterText = arrOfChars =>
         arrOfChars.filter(char => this.enAllKeys.includes(char.toLowerCase()));
@@ -328,15 +235,14 @@ export default {
 .byCustom
   width: 20rem
   textarea
+    padding: 10px
+    border-radius: 5px
+    border: 1px dotted #ccc
     font-size: 1rem
     height: 8rem
     width: 25rem
 .set-text
-  border-width: 3px
-  border-radius: 5px
   display: block
-  height: 2.5rem
-  width: 7.5rem
   cursor: pointer
   position: absolute
   bottom: 0

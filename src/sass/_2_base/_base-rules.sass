@@ -5,12 +5,15 @@
   font-family: $opensans
 
 button
-  height: 2.5rem
-  width: 7.5rem
   outline: none
   border: none
-  border-radius: 5px
+  padding: 10px 15px
+  border-radius: 999px
   cursor: pointer
+  &.disabled
+    color: $dark-gray
+    border-color: $light-gray
+    cursor: not-allowed
 ul
   list-style-type: none
 a

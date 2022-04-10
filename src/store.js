@@ -13,9 +13,8 @@ export const APP_MODE = { PRACTICE: "practice" };
 export const APP_THEME = { LIGHT: "light", DARK: "dark" };
 
 export const TYPING_MODE = {
-  WORDS: "words",
   KEYBOARD: "keyboard",
-  SENTENCES: "sentences",
+  HAND: "hand",
   CUSTOM: "custom"
 };
 
@@ -61,6 +60,7 @@ export default new Vuex.Store({
     activeFinger: "",
     defaultText: DEFAULT_TEXT,
     chosenText: [],
+    typingModes: TYPING_MODE,
     typingMode: TYPING_MODE.KEYBOARD,
     textToType: "",
     enAllKeys: EN_ALL_KEYBOARD_KEYS,
