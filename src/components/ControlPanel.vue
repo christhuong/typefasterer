@@ -41,7 +41,7 @@
               ) Light
 
         .app-options-choice
-          button.show-result-btn.orange-border.dotted-border.orange(@click="setDisplayResult(true)") Show my results
+          button.show-result-btn.green-border.solid-border.green-text(@click="showResult()") Show my results
   .time.custom-select.arrow.blue.tooltip( @click.stop='displayTime = !app.running ? true : false' ) {{timeLabel}}
     .tooltip-text allotted time
     transition( name='select-options' )
@@ -104,6 +104,10 @@ export default {
       toggleTypingMode: "TOGGLE_TYPING_MODE",
       setDisplayResult: "SET_DISPLAY_RESULT"
     }),
+    showResult() {
+      this.selectingOptions = false;
+      this.setDisplayResult(true);
+    },
     optionsClicked() {
       this.selectingOptions =
         !this.app.running || this.app.paused ? true : false;
@@ -174,13 +178,9 @@ export default {
     .app-options-choice
       margin: 0
       .show-result-btn
-        height: 2.5rem
-        width: 8.5rem
-        border-width: 3px
         background: none
         margin: auto
         margin-top: 1rem
-        border-radius: 5px
         display: block
     svg
       position: absolute

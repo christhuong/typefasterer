@@ -30,7 +30,7 @@ export default {
   methods: {
     handleClick() {
       if (this.app.running && !this.app.paused) return;
-      this.setDisplayOptions(true);
+      this.setDisplayOptions(!this.displayOptions);
     },
     getMode(event) {
       this.displayText = false;

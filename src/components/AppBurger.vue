@@ -122,7 +122,6 @@ export default {
       height: 2.5rem
       width: 6rem
       padding: 0 0.5rem
-      border-radius: 5px
       font-size: 1rem
       background: none
       vertical-align: middle

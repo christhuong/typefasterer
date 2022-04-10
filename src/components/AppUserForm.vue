@@ -243,6 +243,7 @@ export default {
       text-align: left
       font-size: 0.75rem
       span
+        margin-left: 5px
         cursor: pointer
     .title
       width: 20rem
@@ -258,9 +259,6 @@ export default {
         background: transparent
     button
       width: auto
-      height: 2.5rem
-      padding: 0 1rem
-      border-radius: 5px
       border-width: 1px
       margin: auto
       display: block
