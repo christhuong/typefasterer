@@ -1,6 +1,4 @@
-<h1 align="center">Type Fasterer</h1>
-
-<!-- ![](/screenshots/typefasterer_header.png) -->
+<h1 align="center"><a href="https://typefasterer-b6cf7.web.app/">Type Fasterer</a></h1>
 
 ### Hi there 👋
 
@@ -42,4 +40,3 @@ $ npm run serve
 | **As a user** 🙎‍♂️ using TypeFasterer to practice typing with 10 fingers, <br/> **I want to** `practice with various typing modes` ⚙ <br/> **so that** I can practice typing under diverse conditions 🌊                           | ![](/screenshots/typing_modes.gif#center)     |
 | **As a user** 👨🏻‍⚕️ using TypeFasterer to practice typing with 10 fingers, <br/> **I want to** be able to have `dark and light` themes 🌓<br/> **so that** I can practice comfortabily day and night🌖                              | ![](/screenshots/theme_change.gif#center)     |
 | **As a user** 👨🏽‍🎓 using TypeFasterer to practice typing with 10 fingers, <br/> **I want to** be able to `view the app information` ℹ️<br/> **so that** I can see how the app can help me and how to get the author's support      | ![](/screenshots/app_details.gif#center)      |
-
