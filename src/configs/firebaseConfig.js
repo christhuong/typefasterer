@@ -1,9 +1,9 @@
 export default {
-  apiKey: "AIzaSyDWP2OEf9-PSrclquuQ86qNuautWgZvq-Y",
-  authDomain: "typefasterer-b6cf7.firebaseapp.com",
-  projectId: "typefasterer-b6cf7",
-  storageBucket: "typefasterer-b6cf7.appspot.com",
-  messagingSenderId: "880099538426",
-  appId: "1:880099538426:web:6925ab3e2af896723e2043",
-  measurementId: "G-VGVL2VGWTZ"
+  apiKey: "AIzaSyC0Zp9dIa41XFMvCsi8MLGdUWVKhH6_4fA",
+  authDomain: "typefasterer.firebaseapp.com",
+  databaseURL: "https://typefasterer.firebaseio.com",
+  projectId: "typefasterer",
+  storageBucket: "typefasterer.appspot.com",
+  messagingSenderId: "844604875471",
+  appId: "1:844604875471:web:88282939dd953e73"
 };
