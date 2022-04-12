@@ -15,6 +15,7 @@ export const APP_THEME = { LIGHT: "light", DARK: "dark" };
 export const TYPING_MODE = {
   KEYBOARD: "keyboard",
   HAND: "hand",
+  WORDS: "words",
   CUSTOM: "custom"
 };
 

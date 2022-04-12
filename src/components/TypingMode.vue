@@ -34,6 +34,19 @@
             )
           span.checkmark
           span.samples.spacing {{row.join('')}}
+  .byWords( v-if="mode === `words`" )
+    .words(
+      v-for="(word, wordName) in textData.words"
+      :key="wordName"
+      )
+      label.custom-input
+        input(
+          type="checkbox"
+          v-model="chosenMode"
+          :value="word.join(' ')"
+          )
+        span.checkmark
+        span.samples {{`${word.length} common ${wordName}`}}
   .byCustom( v-if="mode === 'custom'" )
     textarea(
       placeholder="Enter your own text to practice"
