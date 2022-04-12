@@ -1,5 +1,6 @@
 {
   "projects": {
     "default": "typefasterer"
-  }
+  },
+  "targets": {}
 }

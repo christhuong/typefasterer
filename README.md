@@ -1,4 +1,4 @@
-<h1 align="center"><a href="https://typefasterer-b6cf7.web.app/">Type Fasterer</a></h1>
+<h1 align="center"><a href="https://typefasterer.web.app/">Type Fasterer</a></h1>
 
 ### Hi there 👋
 
