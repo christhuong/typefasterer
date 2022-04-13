@@ -169,9 +169,12 @@ export default {
   padding: 0
   box-sizing: border-box
   h1
+    word-break: break-all
     height: auto
     text-align: left
     font-weight: normal
     overflow-y: auto
     margin: 1.5rem
+    .guide
+      display: inline-block
 </style>
