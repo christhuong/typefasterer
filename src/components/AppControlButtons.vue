@@ -8,6 +8,7 @@
     autocomplete="off"
     spellcheck="false"
     autocorrect="off"
+    :style="{display: app.running ? 'block' : 'none'}"
     @input.prevent="handleInput"
     )
   button.pauseBtn(
@@ -280,15 +281,15 @@ export default {
   white-space: nowrap
   position: relative
   #mobile-input
-    position: fixed
-    height: 0
-    width: 0
-    opacity: 0
-    top: 20vh
+    position: absolute
+    opacity: 1
+    width: 60%
+    border: none
+    top: -65%
     left: 50%
     transform: translate(-50%, 0)
-    user-select: none
-    pointer-events: none
+    padding: 5px
+    font-size: 16px
   button
     height: 3.5rem
     width: 3.5rem
